@@ -1,0 +1,42 @@
+{
+    "parser": "babel-eslint",
+    "plugins": ["import"],
+    "extends": [
+        "eslint:recommended",
+        "plugin:import/errors",
+        "plugin:import/warnings"
+    ],
+    "settings": {
+        "import/resolver": {
+            "node": {
+                "extensions": [".js"]
+            }
+        }
+    },
+    
+    "env": {
+        "es6": true,
+        "browser": false,
+        "node": true,
+        "jquery": false,
+        "jest": true
+    },
+    "rules": {
+       "no-unused-vars": "off",
+        "quotes": 0,
+        "no-console": 0,
+        "no-debugger": 1,
+        "no-var": 0,
+        "no-trailing-spaces": 0,
+        "eol-last": 0,
+        "no-underscore-dangle": 0,
+        "no-alert": 0,
+        "no-lone-blocks": 0,
+        "import/extensions": 1,
+        "import/no-named-as-default": 0
+    },
+    "globals": {
+        "Atomics": false,
+        "SharedArrayBuffer": false
+    } 
+}
