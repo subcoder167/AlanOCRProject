@@ -67,7 +67,7 @@ const SignIn = (props) => {
             </div> */}
           </div>
           <div className="gx-app-login-content">
-            {/* <Form
+            <Form
               onSubmit={handleSubmit}
               className="gx-signin-form gx-form-row0"
             >
@@ -115,12 +115,12 @@ const SignIn = (props) => {
                 >
                   User Sign In
                 </Button>
-                <span>
+                {/* <span>
                   <IntlMessages id="app.userAuth.or" />
                 </span>{" "}
                 <Link to="/signup">
                   <IntlMessages id="app.userAuth.signUp" />
-                </Link>
+                </Link> */}
               </FormItem>
               <div className="gx-flex-row gx-justify-content-between">
                 <span>or connect with</span>
@@ -145,7 +145,7 @@ const SignIn = (props) => {
                   </li>
                 </ul>
               </div>
-            </Form> */}
+            </Form>
           </div>
 
           {loader ? (
