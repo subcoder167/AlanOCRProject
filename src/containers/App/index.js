@@ -137,30 +137,30 @@ const App = (props) => {
     }
   };
 
-  const [path,setPath]=useState('')
-  useEffect(() => {
-    if(/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ){
-      // true for mobile device
-        console.log('not mobile in new');
-        setPath('/punch-clock')
-        console.log(path)
+  // const [path,setPath]=useState('')
+  // useEffect(() => {
+  //   if(/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ){
+
+  //       console.log('not mobile in new');
+  //       setPath('/punch-clock')
+  //       console.log(path)
         
-    }
-    else
-    {
-      setPath('/superadmin/companies')
-    }
-    if (location.pathname === "/") {
-      if (authUser === null) {
-        history.push("/signin");
-      } else if (initURL === "" || initURL === "/" || initURL === "/signin") {
-        history.push(path);
-      } else {
-        history.push(initURL);
-      }
-    }
+  //   }
+  //   else
+  //   {
+  //     setPath('/superadmin/companies')
+  //   }
+  //   if (location.pathname === "/") {
+  //     if (authUser === null) {
+  //       history.push("/signin");
+  //     } else if (initURL === "" || initURL === "/" || initURL === "/signin") {
+  //       history.push(path);
+  //     } else {
+  //       history.push(initURL);
+  //     }
+  //   }
     
-  }, [authUser, initURL, location, history]);
+  // }, [authUser, initURL, location, history]);
 
   const currentAppLocale = AppLocale[locale.locale];
 
@@ -196,13 +196,13 @@ const App = (props) => {
             location={location}
             component={VerifyContractorProfileSteps}
           />
-          <RestrictedRoute
+          <Route
             path={`/punch-clock`}
             authUser={authUser}
             location={location}
             component={PunchClock}
           />
-          <RestrictedRoute
+          <Route
             path={`${match.url}`}
             authUser={authUser}
             location={location}
