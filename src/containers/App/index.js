@@ -196,13 +196,13 @@ const App = (props) => {
             location={location}
             component={VerifyContractorProfileSteps}
           />
-          <Route
+          <RestrictedRoute
             path={`/punch-clock`}
             authUser={authUser}
             location={location}
             component={PunchClock}
           />
-          <Route
+          <RestrictedRoute
             path={`${match.url}`}
             authUser={authUser}
             location={location}
