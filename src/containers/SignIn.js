@@ -108,13 +108,13 @@ const SignIn = (props) => {
                 <Button type="primary" className="gx-mb-0" htmlType="submit">
                   <IntlMessages id="app.userAuth.signIn" />
                 </Button>
-                <Button
+                {/* <Button
                   type="primary"
                   className="gx-mb-0"
                   onClick={gotoPunchClock}
                 >
                   User Sign In
-                </Button>
+                </Button> */}
                 {/* <span>
                   <IntlMessages id="app.userAuth.or" />
                 </span>{" "}
