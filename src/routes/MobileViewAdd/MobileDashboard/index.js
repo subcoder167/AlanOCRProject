@@ -8,7 +8,7 @@ const { Title } = Typography;
 const MobileView =() => {
     // const [resourceType, setResourceType] = useState('all');
     // const [items, setItems] = useState([]);
-    // useEffect(()=>{fetch(`http://147.182.236.95:8000/img_upl/mobile_image_upl/${resourceType}/`).then((result)=>{
+    // useEffect(()=>{fetch(`https://147.182.236.95:8000/img_upl/mobile_image_upl/${resourceType}/`).then((result)=>{
     //     result.json().then(json => setItems(json))
     // })},[resourceType]);
     return(
