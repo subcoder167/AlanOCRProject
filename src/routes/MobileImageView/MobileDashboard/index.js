@@ -8,13 +8,13 @@ const { Title } = Typography;
 const MobileImageView =() => {
     const [resourceType, setResourceType] = useState('all');
     const [imgSrc, setImgSrc] = useState(imgurl);
-    var imgurl=`http://147.182.236.95:8000/media/images/${imgSrc}`;
+    var imgurl=`https://alan.dojoapi.co.in/media/images/${imgSrc}`;
     const [counter,setcounter]= useState(0);
     const [dataindex, setdataindex] = useState(0);
     const [items, setItems] = useState([]);
 
     const [dataset,setDataset]= useState({});
-    useEffect(()=>{fetch(`http://147.182.236.95:8000/img_upl/mobile_image_upl/${resourceType}/`).then((result)=>{
+    useEffect(()=>{fetch(`https://alan.dojoapi.co.in/img_upl/mobile_image_upl/${resourceType}/`).then((result)=>{
         result.json().then(json => setItems(json))
         if(items.length<1)
         setcounter(counter+1);
@@ -54,7 +54,7 @@ const MobileImageView =() => {
                 
                 <section style={{position:"relative"}}>
                     <span>Vendor: {dataset.vendor} </span>
-                    <img style={{width:"90vw",height:"90vw"}} src={`http://147.182.236.95:8000/media/images/${imgSrc}`}/>
+                    <img style={{width:"90vw",height:"90vw"}} src={`https://alan.dojoapi.co.in/media/images/${imgSrc}`}/>
                     <section className="imageBottomWrapper" style={{position:"relative",width:"100%",display:"flex",alignItems:"flex-start",justifyContent:"space-evenly"}}>
                     <span> Invoice Number: {dataset.invoice} </span> <span>Amount: {dataset.amount} </span> 
                     </section>

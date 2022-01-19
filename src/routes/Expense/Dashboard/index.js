@@ -195,7 +195,7 @@ function SampleNextArrow(props) {
 
 const Index = (props) => {
     const [imgSrc, setImgSrc] = useState(imgurl);
-    var imgurl=`https://147.182.236.95:8000/media/images/${imgSrc}`;
+    var imgurl=`https://alan.dojoapi.co.in/media/images/${imgSrc}`;
     
     const [dataindex, setdataindex] = useState(0);
       const [resourceType, setResourceType] = useState('all');
@@ -205,14 +205,14 @@ const Index = (props) => {
      
    
     const [itemset,setItemset]=useState();
-    useEffect(()=>{fetch(`https://147.182.236.95:8000/img_upl/mobile_image_upl/${resourceType}/`).then((result)=>{
+    useEffect(()=>{fetch(`https://alan.dojoapi.co.in/img_upl/mobile_image_upl/${resourceType}/`).then((result)=>{
         result.json().then(json => setItems(json))
         // setItemset(...items,...items)
         if(items.length<1)
         setcounter(counter+1);
         console.log(items);
     })},[resourceType,imgSrc,counter])
-    // fetch("https://147.182.236.95:8000/img_upl/mobile_image_upl/all/?format=api").then((result)=>{
+    // fetch("https://alan.dojoapi.co.in/img_upl/mobile_image_upl/all/?format=api").then((result)=>{
     //     result.json().then((resp)=>{
     //         console.warn("result",resp)
     //     })
