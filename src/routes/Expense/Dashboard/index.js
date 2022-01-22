@@ -569,9 +569,9 @@ const [dataSet,setdataSet] =useState(
             <div>
                 <Title level={3}>Expense</Title>
                 <section className="Filter">
-                                        <span id="inbox"  onClick={()=>setResourceType('all')}>Inbox</span>
-                                        <span id="review" onClick={()=>setResourceType('review')}>Not Reviewed</span>
-                                        <span id="processed" onClick={()=>setResourceType('process')}>Processing</span>
+                                        <span id="inbox"  onClick={()=>setResourceType('review')}>InReview</span>            
+                                        <span id="processed" onClick={()=>setResourceType('processing')}>Processing</span>
+                                        <span id="review" onClick={()=>setResourceType('complete')}>Complete</span>
                                         <span id="trash" onClick={()=>setResourceType('trash')}>Trash</span>
                                         {/* <span onClick={() => setResourceType('all')}>All</span>
                                         <span onClick={() => setResourceType('review')}>Review</span>
@@ -861,7 +861,7 @@ const [dataSet,setdataSet] =useState(
                                     </div>
                                 </div>
                             {/* <Table dataSource={tableData.filter(td=>td.resolve===filter || (`${filter}`==="Inbox") && (td.archive!="archived") || td.archive===filter)} pagination={false}> */}
-                            <Table dataSource={items} onRow={(r) => ({
+                            <Table style={{height:"18vh",overflow:"scroll"}} dataSource={items} onRow={(r) => ({
                                            onClick: (e) => {console.log(r);
                                                e.target.parentElement.style.backgroundColor="red";
                                                setImgSrc(e.target.parentElement.firstElementChild.nextSibling.innerText)
