@@ -11,164 +11,15 @@ import CustomArrows from './Slider'
 import FusionCharts from "fusioncharts";
 import MyComponent from './BarChart'
 import ReactImageMagnify from "react-image-magnify";
-import charts from "fusioncharts/fusioncharts.charts";
-import ReactFusioncharts from "react-fusioncharts";
+import ReactImageZoom from 'react-image-zoom';
 import { color } from "highcharts";
 import { over } from "lodash";
+
 const FormItem = Form.Item;
 const TabPane = Tabs.TabPane;
 
-// const [resourceType, setResourceType] = useState('posts');
-// const [items, setItems] = useState([])
-
-// useEffect(() => {
-//     fetch(`http://127.0.0.1:8000/img_upl/mobile_image_upl/${resourceType}`)
-//       .then(responses => responses.json())
-//       .then(json => setItems(json))
-//   }, [resourceType])
-
 const { RangePicker } = DatePicker;
 const { Title } = Typography;
-charts(FusionCharts);
-
-const getTimeStamp = () => {
-    let d = new Date();
-    let n = d.getTime();
-    return n;
-}
-
-const tableData = [
-    {
-        status: "Good",
-        vendor: "Sysco",
-        invoiceDate: "12/01/2021",
-        invoiceNumber: "0987654",
-        amount: "$123.22",
-        postedBy: "Dropbox",
-        resolve: "resolved",
-        archive: "archived",
-        key:"1",
-        uBreaks: "0",
-        pBreaks: "0",
-        tpBreaks: "9.2",
-        estWages: "$102.40"
-    },
-    {
-        status: "Good",
-        vendor: "Individual Foods",
-        invoiceDate: "12/01/2021",
-        invoiceNumber: "N2345671",
-        amount: "$240.10",
-        postedBy: "Tim N.",
-        resolve: "resolved",
-        archive: "non_archived",
-        key:"2",
-        uBreaks: "0",
-        pBreaks: "0",
-        tpBreaks: "8",
-        estWages: "$88"
-    },
-    {
-        status: "Moderate",
-        vendor: "Individual Foods",
-        invoiceDate: "12/01/2021",
-        invoiceNumber: "N2345671",
-        amount: "$240.10",
-        postedBy: "Tim N.",
-        resolve: "not_resolved",
-        archive: "non_archived",
-        key:"3",
-        uBreaks: "0",
-        pBreaks: "0",
-        tpBreaks: "6",
-        estWages: "$66"
-    },
-    {
-        status: "Good",
-        vendor: "Sysco",
-        invoiceDate: "12/01/2021",
-        invoiceNumber: "0987654",
-        amount: "$23.05",
-        postedBy: "Thomas G.",
-        resolve: "resolved",
-        archive: "non_archived",
-        uBreaks: "0",
-        pBreaks: "0",
-        tpBreaks: "4",
-        key:"4",
-        estWages: "$44"
-    },
-    // {
-    //     date: "Total",
-    //     reg: "26",
-    //     ot: "1.2",
-    //     dot: "0",
-    //     uBreaks: "0",
-    //     pBreaks: "0",
-    //     key:"5",
-    //     tpBreaks: "27.2",
-    //     estWages: "$300.40"
-    // }
-];
-
-const TableDataByDate = [
-    {
-        name: 'Jason Bourne',
-        wadge_rate: '$11',
-        Time_card: '01:00pm - 5:00pm',
-        job_title: 'Manager',
-        department: 'Back',
-        reg: '8',
-        ot: '1.2',
-        uBreaks: '0',
-        key:"6",
-        paid_breaks: '2',
-        tp_hours: '0',
-        est_wages: '$102.68'
-    },
-    {
-        name: 'Jason Bourne',
-        wadge_rate: '$11',
-        Time_card: '01:00pm - 5:00pm',
-        job_title: 'Manager',
-        department: 'Back',
-        reg: '8',
-        ot: '1.2',
-        key:"7",
-        uBreaks: '0',
-        paid_breaks: '2',
-        tp_hours: '0',
-        est_wages: '$102.68'
-    },
-    {
-        name: 'Jason Bourne',
-        wadge_rate: '$11',
-        Time_card: '01:00pm - 5:00pm',
-        job_title: 'Manager',
-        department: 'Back',
-        reg: '8',
-        key:"8",
-        ot: '1.2',
-        uBreaks: '0',
-        paid_breaks: '2',
-        tp_hours: '0',
-        est_wages: '$102.68'
-    },
-    {
-        name: 'Jason Bourne',
-        wadge_rate: '$11',
-        Time_card: '01:00pm - 5:00pm',
-        job_title: 'Manager',
-        department: 'Back',
-        reg: '8',
-        ot: '1.2',
-        key:"9",
-        uBreaks: '0',
-        paid_breaks: '2',
-        tp_hours: '0',
-        est_wages: '$102.68'
-    }
-]
 
 
 function SamplePrevArrow(props) {
@@ -195,6 +46,7 @@ function SampleNextArrow(props) {
 
 const Index = (props) => {
     const [imgSrc, setImgSrc] = useState(imgurl);
+    const imgprops = {width: 400, height: 500, zoomWidth: 400, zoomPosition: 'original', img: `https://alan.dojoapi.co.in/media/images/${imgSrc}`};
     var imgurl=`https://alan.dojoapi.co.in/media/images/${imgSrc}`;
     
     const [dataindex, setdataindex] = useState(0);
@@ -203,20 +55,18 @@ const Index = (props) => {
     const [items, setItems] = useState([])
     const [counter, setcounter] = useState(0)
      
-   
+    function changeTop(table)
+        {
+            setTopTable(table)
+        }
     const [itemset,setItemset]=useState();
     useEffect(()=>{fetch(`https://alan.dojoapi.co.in/img_upl/mobile_image_upl/${resourceType}/`).then((result)=>{
         result.json().then(json => setItems(json))
-        // setItemset(...items,...items)
         if(items.length<1)
         setcounter(counter+1);
-        console.log(items);
-    })},[resourceType,imgSrc,counter])
-    // fetch("https://alan.dojoapi.co.in/img_upl/mobile_image_upl/all/?format=api").then((result)=>{
-    //     result.json().then((resp)=>{
-    //         console.warn("result",resp)
-    //     })
-    // })
+        // console.log(dataSet);
+       changeTop(topTable)
+    })},[resourceType,imgSrc,counter,dataSet,topTable])
 
     const [loader, setLoader] = useState(false);
     const [visible, setVisible] = useState(false)
@@ -229,28 +79,20 @@ const Index = (props) => {
     const [visibleOnclickRow, setVisibleOnclickRow] = useState(false)
     const [visibleOnclickGraph, setVisibleOnclickGraph] = useState(false)
     const [filter, SetFilter]= useState('Inbox');
+    const [template,setTemplate]=useState('');
     const handleMenuClick = value => {
 
     };
-    function checkIndex()
-    {
-     items.find(function(item, i){
-        if(item.image_name === imgSrc){
-        setdataindex(i);
-        }
-       });
-    }
-const [dataSet,setdataSet] =useState(
-        [
-            // {
-            //     "ItemNo":"",
-            //     "Qtyordered":"",
-            //     "unit":"",
-            //     "description":"",
-            //     "unitPrice":"",
-            //     "Price":""
-            // }
-        ])
+    // function checkIndex()
+    // {
+    //  items.find(function(item, i){
+    //     if(item.image_name === imgSrc){
+    //     setdataindex(i);
+    //     }
+    //    });
+    // }
+const [dataSet,setdataSet] =useState([])
+const [topTable,setTopTable]= useState({})
         
     var settings = {
         dots: true,
@@ -270,38 +112,11 @@ const [dataSet,setdataSet] =useState(
 
     const { getFieldDecorator } = props.form;
 
-    const handleOk = (e) => {
-        console.log(e)
-    }
-
-    const handleOkAddTimeCard = (e) => {
-        console.log(e)
-    }
-
-    const handleCancelAddTimeCard = (e) => {
-        setVisibleAddTimeCard(false)
-        console.log(e)
-    }
-
     const addTimeCardFunc = (e) => {
         setVisibleAddTimeCard(true)
         console.log(e)
     }
 
-    const onChangeFormTab = (key) => {
-        setFormTab(key);
-    };
-
-    const handleCancel = (e) => {
-        setVisible(false)
-        console.log(e)
-    }
-
-    const groupByDateFun = (e) => {
-        setGroupByDate(true)
-        setGroupByUser(false)
-        console.log(e)
-    }
 
     const groupByGraphFun = () => {
         setGroupByGraph(true)
@@ -312,243 +127,12 @@ const [dataSet,setdataSet] =useState(
         setGroupByGraph(false)
         setGroupByUserWithoutGraph(true)
     }
+ 
+const pacificCoast= ['tx','item','qty_order','qty_ship','uom','units','pack','size','item_number','description','unit_price',    'billing_units','extend_amount']
 
-    const groupByUserFun = (e) => {
-        setGroupByDate(false)
-        setGroupByUser(true)
-        console.log(e)
-    }
+const jordanos= ['itemno','shipped','pacsize','um','brand','upc','extension','unitprice','description']
 
-    const addTimeFunc = (e) => {
-        console.log(e)
-        e.stopPropagation();
-        setVisible(true)
-    }
-
-    const handleSubmit = (e) => {
-        e.preventDefault();
-        props.form.validateFields(async (err, values) => {
-            if (!err) {
-                // setLoader(true);
-                console.log("values", values);
-                const obj = {
-                    job_title: values.job_title,
-                    wage_rate: values.wage_rate,
-                    phone: Number(values.phone),
-                    punch_in_date: values.punch_in_date,
-                    punch_in_time: values.punch_in_time,
-                    punch_out_date: values.punch_out_date,
-                    punch_out_time: values.punch_out_time,
-                    break_in_date: values.break_in_date,
-                    break_in_time: values.break_in_time,
-                    break_out_date: values.break_out_date,
-                    break_out_time: values.break_out_time,
-                    break_type: values.break_type,
-                    reason_for_change: values.reason_for_change,
-                    address: {
-                        street1: values.street1,
-                        street2: values.street2,
-                        city: values.city,
-                        zip: values.zip,
-                        state: values.state
-                    }
-                }
-                // const result = await updatePersonalDetail(token, { ...obj, ...params, actionType: "employee" }, company, location);
-                // setLoader(false);
-                // if (result.status === 200) {
-                //   updateSavedObj(result.data);
-                //   handleCancel();
-                // }
-            }
-        });
-    };
-
-    const menu = () => (
-        <Menu onClick={handleMenuClick}>
-            <Menu.Item key="1">Departments</Menu.Item>
-            <Menu.Item key="2">Value - 1</Menu.Item>
-            <Menu.Item key="3">Value - 2</Menu.Item>
-        </Menu>
-    );
-
-    let addBreak = (e) => {
-        console.log("called")
-    }
-
-    let deleteTimeCard = (e) => {
-        console.log("called")
-    }
-
-    let popUpModalHistoryUser = () => {
-        console.log('h hjh')
-        setVisibleOnclickRow(true)
-    }
-
-    let handleCancelOnclickRow = () => {
-        setVisibleOnclickRow(false)
-    }
-
-    let handleCancelOnclickGraph = () => {
-        setGroupByGraph(false)
-        setGroupByUserWithoutGraph(true)
-    }
-
-    // const dataSource = {
-    //     tasks: {
-    //         showlabels: "1",
-    //         color: "#5D62B5",
-    //         task: [
-    //             {
-    //                 processid: "EMP120",
-    //                 start: "07:00:00",
-    //                 end: "16:00:00",
-    //                 label: "Morning Shift"
-    //             },
-    //             {
-    //                 processid: "EMP121",
-    //                 start: "14:00:00",
-    //                 end: "22:00:00",
-    //                 label: "Afternoon Shift"
-    //             },
-    //             {
-    //                 processid: "EMP122",
-    //                 start: "14:00:00",
-    //                 end: "18:30:00",
-    //                 label: "Half Day"
-    //             },
-    //             {
-    //                 processid: "EMP123",
-    //                 start: "07:00:00",
-    //                 end: "16:00:00",
-    //                 label: "Morning Shift"
-    //             },
-    //             {
-    //                 processid: "EMP124",
-    //                 start: "14:00:00",
-    //                 end: "22:00:00",
-    //                 label: "Afternoon Shift"
-    //             },
-    //             {
-    //                 processid: "EMP125",
-    //                 start: "00:00:00",
-    //                 end: "08:00:00",
-    //                 label: "Early Morning support"
-    //             },
-    //             {
-    //                 processid: "EMP126",
-    //                 start: "07:00:00",
-    //                 end: "11:30:00",
-    //                 label: "Half Day"
-    //             }
-    //         ]
-    //     },
-    //     processes: {
-    //         fontsize: "12",
-    //         isbold: "1",
-    //         align: "Center",
-    //         headertext: "Employee",
-    //         headerfontsize: "14",
-    //         headervalign: "middle",
-    //         headeralign: "left",
-    //         process: [
-    //             {
-    //                 label: "Betty",
-    //                 id: "EMP120"
-    //             },
-    //             {
-    //                 label: "William",
-    //                 id: "EMP121"
-    //             },
-    //             {
-    //                 label: "Emma",
-    //                 id: "EMP122"
-    //             },
-    //             {
-    //                 label: "Oliver",
-    //                 id: "EMP123"
-    //             },
-    //             {
-    //                 label: "Lucas",
-    //                 id: "EMP124"
-    //             },
-    //             {
-    //                 label: "Alex",
-    //                 id: "EMP125"
-    //             },
-    //             {
-    //                 label: "John",
-    //                 id: "EMP126"
-    //             }
-    //         ]
-    //     },
-    //     categories: [
-    //         {
-    //             category: [
-    //                 {
-    //                     start: "00:00:00",
-    //                     end: "23:59:59",
-    //                     label: "Time"
-    //                 }
-    //             ]
-    //         },
-    //         {
-    //             align: "center",
-    //             category: [
-    //                 {
-    //                     start: "00:00:00",
-    //                     end: "02:59:59",
-    //                     label: "Midnight"
-    //                 },
-    //                 {
-    //                     start: "03:00:00",
-    //                     end: "05:59:59",
-    //                     label: "3 AM"
-    //                 },
-    //                 {
-    //                     start: "06:00:00",
-    //                     end: "08:59:59",
-    //                     label: "6 AM"
-    //                 },
-    //                 {
-    //                     start: "09:00:00",
-    //                     end: "11:59:59",
-    //                     label: "9 AM"
-    //                 },
-    //                 {
-    //                     start: "12:00:00",
-    //                     end: "14:59:59",
-    //                     label: "12 PM"
-    //                 },
-    //                 {
-    //                     start: "15:00:00",
-    //                     end: "17:59:59",
-    //                     label: "3 PM"
-    //                 },
-    //                 {
-    //                     start: "18:00:00",
-    //                     end: "20:59:59",
-    //                     label: "6 PM"
-    //                 },
-    //                 {
-    //                     start: "21:00:00",
-    //                     end: "23:59:59",
-    //                     label: "9 PM"
-    //                 }
-    //             ]
-    //         }
-    //     ],
-    //     chart: {
-    //         dateformat: "dd/mm/yyyy",
-    //         outputdateformat: "hh12:mn ampm",
-    //         caption: "Shift Roster for June",
-    //         subcaption: "Customer Success Team<br>Sensibill",
-    //         ganttpaneduration: "22",
-    //         ganttpanedurationunit: "h",
-    //         scrolltodate: "09:00:00",
-    //         useverticalscrolling: "0",
-    //         theme: "fusion"
-    //     }
-    // };
+const produceAvailable = ['item_number','qty_order','qty_ship','uom',' billing_units','extend_amount','unit_price','description']
 
     return (
         <Fragment>
@@ -573,9 +157,6 @@ const [dataSet,setdataSet] =useState(
                                         <span id="processed" onClick={()=>setResourceType('processing')}>Processing</span>
                                         <span id="review" onClick={()=>setResourceType('complete')}>Complete</span>
                                         <span id="trash" onClick={()=>setResourceType('trash')}>Trash</span>
-                                        {/* <span onClick={() => setResourceType('all')}>All</span>
-                                        <span onClick={() => setResourceType('review')}>Review</span>
-                                        <span onClick={() => setResourceType('trash')}>Trash</span> */}
                             
                                     </section>
                 <div className="flex-x align-center filter-wrapper">
@@ -596,39 +177,12 @@ const [dataSet,setdataSet] =useState(
                         </div>
                         <div className="flex-x center combo-box-1 gx-mr-2">
                             <div className={`flex-1 flex-x center ` + (groupByUserWithoutGraph ? 'active' : '') + ` cursor-pointer`} onClick={(e) => { groupByUserWithoutGraphFun(e) }}>
-                                {/* <span className={(groupByUserWithoutGraph ? 'color-white' : 'color-black')} style={{ fontSize: "16px" }} >123</span> */}
                                 <Icon type="menu-fold" className={(groupByGraph ? 'color-black' : 'color-white')} style={{ fontSize: "16px" }} />
                             </div>
                             <div className={"flex-1 flex-x center " + (groupByGraph ? 'active' : '') + " cursor-pointer"} onClick={(e) => { groupByGraphFun(e) }}>
                                 <Icon type="file-image" className={(groupByGraph ? 'color-white' : 'color-black')} style={{ fontSize: "16px" }} />
                             </div>
                         </div>
-                        {/* <div className="flex-x center combo-box-1 gx-mr-2">
-                            <div className="flex-1 flex-x center active cursor-pointer">
-                                <Icon type="pause" rotate="90" style={{ fontSize: "16px", color: "#fff" }} />
-                            </div>
-                            <div className="flex-1 flex-x center cursor-pointer">
-                                <Icon type="barcode" style={{ fontSize: "16px", color: "#303030" }} />
-                            </div>
-                        </div> */}
-                        {/* <div className="flex-x center combo-box-1 gx-mr-2">
-                            <div className={`flex-1 flex-x center ` + (groupByUser ? 'active' : '') + ` cursor-pointer`} onClick={(e) => { groupByUserFun(e) }}>
-                                <Icon type="user" className={(groupByUser ? 'color-white' : 'color-black')} style={{ fontSize: "16px" }} />
-                            </div>
-                            <div className={"flex-1 flex-x center " + (groupByDate ? 'active' : '') + " cursor-pointer"} onClick={(e) => { groupByDateFun(e) }}>
-                                <Icon type="calendar" className={(groupByDate ? 'color-white' : 'color-black')} style={{ fontSize: "16px" }} />
-                            </div>
-                        </div> */}
-                        {/* <div className="gx-mr-2 department-drp">
-                            <Dropdown overlay={menu}>
-                                <Button>
-                                    Departments <Icon type="down" />
-                                </Button>
-                            </Dropdown>
-                        </div> */}
-                        {/* <div className="setting-wrapper flex-x center gx-mr-2 cursor-pointer">
-                            <Icon type="database" rotate="90" style={{ fontSize: "16px", color: "#757575" }} />
-                        </div> */}
                         <Link to="/overview">
                         <div className="setting-wrapper flex-x center cursor-pointer" style={{ backgroundColor: "#6D9766", width: "fit-content", padding: "10px" }}>
                             <Icon type="plus" style={{ fontSize: "16px", color: "#fff" }} />
@@ -637,11 +191,6 @@ const [dataSet,setdataSet] =useState(
                         </Link>
                     </div>
                 </div>
-
-                {/* <div className="gx-mt-4 summary-wrapper">
-                    <span>Total Paid Hours: &nbsp;81.6 </span>
-                    <span>Estimated Wages: &nbsp;$917.40</span>
-                </div> */}
                 {
                     groupByDate ?
                         (groupByGraph ?
@@ -670,255 +219,998 @@ const [dataSet,setdataSet] =useState(
                                             <Icon type="plus" style={{ color: "#fff" }} />
                                         </div>
                                     </div>
-                                    {/* <div className="table-container">
-                                        <Table dataSource={tableData} pagination={false}>
-                                            <Column align="center" title="Date" dataIndex="name" key="name" />
-                                            <Column align="center" title="Wage Rate" dataIndex="wadge_rate" key="wadge_rate" />
-                                            <Column align="center" title="Time Card" dataIndex="Time_card" key="Time_card" />
-                                            <Column align="center" title="Job Title" dataIndex="job_title" key="job_title" />
-                                            <Column align="center" title="Department" dataIndex="department" key="department" />
-                                            <Column align="center" title="REG" dataIndex="reg" key="reg" />
-                                            <Column align="center" title="OT" dataIndex="ot" key="ot" />
-                                            <Column align="center" title="DOT" dataIndex="dot" key="dot" />
-                                            <Column align="center" title="U.Breaks" dataIndex="uBreaks" key="uBreaks" />
-                                            <Column align="center" title="P.Breaks" dataIndex="paid_breaks" key="paid_breaks" />
-                                            <Column align="center" title="T.P.Breaks" dataIndex="tp_hours" key="tp_hours" />
-                                            <Column align="center" title="Est. Wages" dataIndex="est_wages" key="est_wages" />
-                                            <Column
-                                                align="center"
-                                                title="Actions"
-                                                dataIndex="actions"
-                                                key="actions"
-                                                render={(value, record) => (
-                                                    record.name !== "Total" &&
-                                                    <Fragment>
-                                                        <Icon className="cursor-pointer gx-mr-2" type="camera" theme="filled" style={{ fontSize: "18px", color: "#757575" }} />
-                                                        <Icon className="cursor-pointer gx-mr-2" type="clock-circle" style={{ fontSize: "18px", color: "#757575" }} onClick={(e) => addTimeFunc(e)} />
-                                                        <Icon className="cursor-pointer" type="delete-solid" style={{ fontSize: "18px", color: "#757575" }} />
-                                                    </Fragment>
-                                                )}
-                                            />
-                                        </Table>
-                                    </div> */}
                                 </div>
                             // ))
                         ) : (groupByGraph ? <div className="table-card">
-                            {/* <div className="flex-x align-center table-wrapper">
-                                <div className="flex-1">
-                                    <Title level={4} className="gx-mb-0">Thu .May 21</Title>
-                                </div>
-                                <div className="flex-x center cursor-pointer" onClick={(e) => addTimeCardFunc(e)}>
-                                    <Icon type="plus" style={{ color: "#fff" }} />
-                                </div>
-                            </div> */}
+                            
                             <div className="table-container">
                                 <div className="imgContainer">
-                                    <ReactImageMagnify {...{
-                                        smallImage: {
-                                            alt: 'InvoiceImage',
-                                            isFluidWidth: false,
-                                            src: `${imgurl}`,
-                                            width: 430,
-                                            height: 620   
-                                        },
-                                        largeImage: {                                            
-                                            src: `${imgurl}`,
-                                            width: 860,
-                                            height: 620
-                                        }
-                                    }} style={{zIndex:99,overflow:'visible'}}/>
-                                    {/* <img className="imgPrev" src={imgurl} style={{ width:"200px",overflowX:"scroll"}}></img> */}
+                                    <ReactImageZoom {...imgprops} />
                                     <div className="details" style={{position:"relative"}}>
                                     <div className="metaData" style={{ textAlign:"left"}}>
-                                    <div>Vendor : {items[dataindex].information.shipping_address[0][0][0]+" "+items[dataindex].information.shipping_address[0][1][0]}</div>
+                                    <div>Vendor :
+                                                        <>
+                                                            {topTable.shipping_address?.map(address=><>
+                                                               {(address[1]>=80)?
+                                                                <input type="text"
+                                                                style={{border:"none",background:"transparent",width:"fit-content",color:"green"}} value={address[0][0]}/>
+                                                                :
+                                                                <>
+                                                                {
+                                                                (address[1]>=60&&address[1]<80)?
+                                                                
+                                                                <input type="text" style={{border:"none",background:"transparent",width:"fit-content",color:"#FFD700"}} value={address[0][0]}></input>
+                                                                
+                                                                :
+                                                                <input type="text" style={{border:"none",background:"transparent",width:"fit-content",color:"red"}} value={address[0][0]}></input>
+                                                                }
+                                                                </>
+                                                            
+                                                            }
+                                                            
+                                                            </> )}
+                                                            {/* {topTable.shipping_address.map(address=>
+                                                                {(address[1]>80)?<>{address[0]}</>:<></>}
+                                                               )} */}
+                                                               {/* {
+                                                               topTable.shipping_address?.map(address=><>
+                                                               {address[0][0]}&nbsp;
+                                                               
+                                                               </>)
+                                                               } */}
+                                                            </>
+                                                            
+                                                            </div>
 
-                                    <div><span style={{color:'red'}}>Invoice # </span>{items[dataindex].information.invoice_number[0]}</div>
-                                    <div>Order Date : {items[dataindex].information.order_date[0]}</div>
-                                    <div>Delivery Date : {items[dataindex].uploaded_at}</div>
-                                    <div>Total :${items[dataindex].information.total[0]}</div>
+                                    <div><span style={{color:'red'}}>Invoice # 
+                                    {/* <>
+                                                    
+                                                        {(items[dataindex].information.invoice_number[1]>=80)?<input type="text" style={{border:"none",background:"transparent",width:"fit-content",color:"green"}} defaultValue={items[dataindex].information.invoice_number[0]}></input>
+                                                        :
+                                                        <>
+                                                        {(items[dataindex].information.invoice_number[1]>=60 && items[dataindex].information.invoice_number[1]<80)?
+                                                        <input type="text" style={{border:"none",background:"transparent",width:"fit-content",color:"yellow"}} defaultValue={items[dataindex].information.invoice_number[0]}>
+                                                        </input>
+
+                                                        :
+                                                        <input type="text" style={{border:"none",background:"transparent",width:"fit-content",color:"red"}} defaultValue={items[dataindex].information.invoice_number[0]}>
+                                                        </input>
+                                                        }
+                                                        </>
+                                                           }
+                                                        </> */}
+
+                                                        {topTable.invoice?.[0]}
+
+                                                        </span></div>
+                                    <div style={{display:"flex"}}>Order Date : 
+                                    {/* <>
+                                                        
+                                                        { topTable.orderDate?.{(topTable.orderDate[1]>=80)?<input type="text" style={{border:"none",background:"transparent",width:"fit-content",color:"green"}} value={topTable.orderDate[0]}></input>
+                                                        :
+                                                        <>
+                                                        {(items[dataindex].information.order_date[1]>=60 && items[dataindex].information.order_date[1]<80)?
+                                                        <input type="text" style={{border:"none",background:"transparent",width:"fit-content",color:"yellow"}} value={topTable.orderDate[0]}>
+                                                        </input>
+
+                                                        :
+                                                        <input type="text" style={{border:"none",background:"transparent",width:"fit-content",color:"red"}} value={topTable.orderDate[0]}>
+                                                        </input>
+                                                        }
+                                                        </>
+                                                           }
+                                                        </> */}
+                                        {/* {items[dataindex].information.order_date[0]} */}
+                                        
+                                                              { topTable.orderDate?.[0]}
+                                                             
+                                                               
+                                        </div>
+                                    <div>Delivery Date : 
+                                        {/* {items[dataindex].uploaded_at} */}
+                                        {topTable.delivery}
                                     </div>
-                                    <div className="ocrData">
-                                    {/* <Table style={{background:"#e5e5e5"}} dataSource={dataSet}  pagination={false} style={{overflow:"scroll"}}> */}
-                                            {/* <div className="table-wrapper">  */}
-                                            {/* onClick={()=>setImgSrc({image_name})} */}
-                                            {/* <Column align="center" title="ItemNo" dataIndex="ItemNo[0][0]" key="ItemNo" />
-                                            <Column align="center" title="Quantity ordered" dataIndex="Qtyordered[0][0]" key="Qtyordered" />
-                                            <Column align="center" title="unit" dataIndex="unit[0][0]" key="unit" />
-                                            <Column align="center" title="Description" dataIndex="description[0]" key="description" />
-                                            <Column align="center" title="Unit Price" dataIndex="unitPrice[0][0]" key="unitPrice"/>
-                                            <Column align="center" title="Price" dataIndex="Price" key="Price" /> */}
-                                            {/* <Column align="center" title="Posted By" dataIndex="postedBy" key="postedBy" /> */}
-                                            {/* <Column align="center" title="Actions" dataIndex="ot" key="actions" /> */}
-                                            {/* <Column align="center" title="DOT" dataIndex="dot" key="dot" />
-                                            <Column align="center" title="U.Breaks" dataIndex="uBreaks" key="uBreaks" />
-                                            <Column align="center" title="P.Breaks" dataIndex="pBreaks" key="pBreaks" />
-                                            <Column align="center" title="T.P.Breaks" dataIndex="tpBreaks" key="tpBreaks" />
-                                            <Column align="center" title="Est. Wages" dataIndex="estWages" key="estWages" /> */}
+                                    <div>Total :$
+                                        <>
+                                                            {topTable.total?.map((total,index)=>
+                                                            <>{(index%2==0)?<>{(total[1]>=80)?
+                                                                <input type="text"
+                                                                style={{border:"none",background:"transparent",width:"fit-content",color:"green"}} value={total}/>
+                                                                :
+                                                                <>
+                                                                {
+                                                                (total[1]>=60&&total[1]<80)?
+                                                                
+                                                                <input type="text" style={{border:"none",background:"transparent",width:"fit-content",color:"#FFD700"}} value={total}></input>
+                                                                
+                                                                :
+                                                                <input type="text" style={{border:"none",background:"transparent",width:"fit-content",color:"red"}} value={total}></input>
+                                                                }
+                                                                </>
+                                                            
+                                                            }</>:<></>}
+                                                            
+                                                            </> )}
+                                                            </>
+
+                                                            {/* {topTable.total?.map((total,index)=>
+                                                            <>{(index%2==0)?<>{total}&nbsp;</>:<></>}</>
+                                                            )} */}
+                                                            </div>
+                                    </div>
+                                    <div className="ocrData" style={{height:"200px",overflowY:"scroll"}}>
+
+                                        <table style={{width:"100%"}} className="detailTable">
+                                         
+                                                {(template=="Jordanos")?
+                                                <>
+                                                    <thead>
+                                                    <tr>
+                                                        {jordanos.map((header)=><td>{header}</td>)}
+                                                    </tr>
+                                                    </thead>
+                                                    <tbody style={{height:"100px",overflow:"scroll"}}>
+                                                        {dataSet.map((data)=>(
+                                                        <>                                                  
+                                                        <tr style={{border:"1px solid black",margin:"5px"}} >
+                                                            <>
+                                                            <td style={{width:"80px",border:"1px solid black",height:"100%",textAlign:"center"}}>
+                                                            
+                                                            <>
+                                                                
+                                                                {(data.itemno[1]>=80)?<input type="text" style={{border:"none",background:"transparent",width:"100%",color:"green"}} defaultValue={data.itemno[0]}></input>
+                                                                :
+                                                                <>
+                                                                {(data.itemno[1]>=60&&data.itemno[1]<80)?
+                                                                <input type="text" style={{border:"none",background:"transparent",width:"100%",color:"#FFD700"}} defaultValue={data.itemno[0]}>
+                                                                </input>
+
+                                                                :
+                                                                <input type="text" style={{border:"none",background:"transparent",width:"100%",color:"red"}} defaultValue={data.itemno[0]}>
+                                                                </input>
+                                                                }</>
+                                                                }
+                                                                </>
+                                                            </td>
+                                                            <td style={{width:"100px",border:"1px solid black",height:"100%",textAlign:"center"}}><>
+                                                                
+                                                                {(data.shipped[1]>=80)?<input style={{border:"none",background:"transparent",width:"100%",color:"green"}} defaultValue={data.shipped[0]}></input>
+                                                                :
+                                                                <>
+                                                                {(data.shipped[1]>=60&&data.shipped[1]<80)?
+                                                                <input type="text" style={{border:"none",background:"transparent",width:"100%",color:"#FFD700"}} defaultValue={data.shipped[0]}>                                                         
+                                                                </input>
+                                                                :
+                                                                <input type="text" style={{border:"none",background:"transparent",width:"100%",color:"red"}} defaultValue={ data.shipped[0]}>
+                                                                
+                                                                </input>
+                                                                }</>
+                                                                }
+                                                                </>
+                                                            </td>
+                                                            <td style={{width:"100px",border:"1px solid black",height:"100%",textAlign:"center"}}>
+                                                            <>
+                                                            { data.pacsize.map(pac=>(<>
+                                                            {(pac[1]>=80)?
+                                                                <input type="text"
+                                                                style={{border:"none",background:"transparent",width:"100%",color:"green"}} defaultValue={pac[0]}/>
+                                                                :
+                                                                <>
+                                                                {
+                                                                (pac>=60&&pac<80)?
+                                                                
+                                                                <input type="text" style={{border:"none",background:"transparent",width:"100%",color:"#FFD700"}} defaultValue={pac[0]}></input>
+                                                                
+                                                                :
+                                                                <input type="text" style={{border:"none",background:"transparent",width:"100%",color:"red"}} defaultValue={pac[0]}></input>
+                                                                }
+                                                                </>
+                                                            
+                                                            }
+                                                            
+                                                            </> ))}
+                                                            </>
+                                                            </td> 
+
+                                                            <td style={{width:"100px",border:"1px solid black",height:"100%",textAlign:"center"}}>
+                                                            <>
+                                                            { data.um.map(um=>(<>
+                                                            {(um[1]>=80)?
+                                                                <input type="text"
+                                                                style={{border:"none",background:"transparent",width:"100%",color:"green"}} defaultValue={um[0]}/>
+                                                                :
+                                                                <>
+                                                                {
+                                                                (um>=60&&um<80)?
+                                                                
+                                                                <input type="text" style={{border:"none",background:"transparent",width:"100%",color:"#FFD700"}} defaultValue={um[0]}></input>
+                                                                
+                                                                :
+                                                                <input type="text" style={{border:"none",background:"transparent",width:"100%",color:"red"}} defaultValue={um[0]}></input>
+                                                                }
+                                                                </>
+                                                            
+                                                            }
+                                                            
+                                                            </> ))}
+                                                            </>
+                                                            </td> 
+                                                            
+                                                                
+                                                            <td style={{width:"100px",border:"1px solid black",height:"100%",textAlign:"center"}}>
+                                                            <>
+                                                            { data.brand.map(pac=>(<>
+                                                            {(pac[1]>=80)?
+                                                                <input type="text"
+                                                                style={{border:"none",background:"transparent",width:"100%",color:"green"}} defaultValue={pac[0]}/>
+                                                                :
+                                                                <>
+                                                                {
+                                                                (pac>=60&&pac<80)?
+                                                                
+                                                                <input type="text" style={{border:"none",background:"transparent",width:"100%",color:"#FFD700"}} defaultValue={pac[0]}></input>
+                                                                
+                                                                :
+                                                                <input type="text" style={{border:"none",background:"transparent",width:"100%",color:"red"}} defaultValue={pac[0]}></input>
+                                                                }
+                                                                </>
+                                                            
+                                                            }
+                                                            
+                                                            </> ))}
+                                                            </>
+                                                            </td> 
+
+
+                                                            
+                                                            <td style={{width:"100px",border:"1px solid black",height:"100%",textAlign:"center"}}>
+                                                            <>
+                                                            { data.upc.map(upc=>(<>
+                                                            {(upc[1]>=80)?
+                                                                <input type="text"
+                                                                style={{border:"none",background:"transparent",width:"100%",color:"green"}} defaultValue={upc[0]}/>
+                                                                :
+                                                                <>
+                                                                {
+                                                                (upc>=60&&upc<80)?
+                                                                
+                                                                <input type="text" style={{border:"none",background:"transparent",width:"100%",color:"#FFD700"}} defaultValue={upc[0]}></input>
+                                                                
+                                                                :
+                                                                <input type="text" style={{border:"none",background:"transparent",width:"100%",color:"red"}} defaultValue={upc[0]}></input>
+                                                                }
+                                                                </>
+                                                            
+                                                            }
+                                                            
+                                                            </> ))}
+                                                            </>
+                                                            </td> 
+
+                                                            <td style={{width:"100px",border:"1px solid black",height:"100%",textAlign:"center"}}>
+                                                            <>
+                                                            { data.extension.map(pac=>(<>
+                                                            {(pac[1]>=80)?
+                                                                <input type="text"
+                                                                style={{border:"none",background:"transparent",width:"100%",color:"green"}} defaultValue={pac[0]}/>
+                                                                :
+                                                                <>
+                                                                {
+                                                                (pac>=60&&pac<80)?
+                                                                
+                                                                <input type="text" style={{border:"none",background:"transparent",width:"100%",color:"#FFD700"}} defaultValue={pac[0]}></input>
+                                                                
+                                                                :
+                                                                <input type="text" style={{border:"none",background:"transparent",width:"100%",color:"red"}} defaultValue={pac[0]}></input>
+                                                                }
+                                                                </>
+                                                            
+                                                            }
+                                                            
+                                                            </> ))}
+                                                            </>
+                                                            </td> 
+
+                                                            <td style={{width:"100px",border:"1px solid black",height:"100%",textAlign:"center"}}>
+                                                            <>
+                                                                
+                                                                {(data.unitprice[1]>=80)?<input type="text" style={{border:"none",background:"transparent",width:"100%",color:"green"}} defaultValue={data.unitprice[0]}></input>
+                                                                :
+                                                                <>
+                                                                {(data.unitprice[1]>=60&&data.unitprice[1]<80)?
+                                                                <input type="text" style={{border:"none",background:"transparent",width:"100%",color:"#FFD700"}} defaultValue={data.unitprice[0]}>
+                                                                
+                                                                </input>
+                                                                :
+                                                                <input type="text"  style={{border:"none",background:"transparent",width:"100%",color:"red"}} defaultValue={data.unitprice[0]}>
+                                                                
+                                                                </input>
+                                                                }</>
+                                                                }
+                                                                </>
+                                                            </td>
+                                                                
+                                                            <td style={{width:"180px",border:"1px solid black",height:"100%",textAlign:"center"}}>{data.description.map(desc=>(
+                                                                <>
+                                                                
+                                                                {(desc[1]>=80)?<input type="text" style={{border:"none",background:"transparent",width:"100%",color:"green"}} defaultValue={desc[0]}></input>
+                                                                :
+                                                                <>
+                                                                {(desc[1]>=60&&desc[1]<80)?
+                                                                <input type="text" style={{border:"none",background:"transparent",width:"100%",color:"#FFD700"}} defaultValue={desc[0]}>
+                                                                
+                                                                </input>
+                                                                :
+                                                                <input type="text" style={{border:"none",background:"transparent",width:"100%",color:"red"}} defaultValue={desc[0]}>
+                                                                
+                                                                </input>
+                                                                }
+                                                                </>
+                                                                }
+                                                                </>
+                                                            ))}
+                                                            
+                                                            </td>
+                                                            
+                                                            </> 
+                                                        </tr>
+
+                                                        </>
+                                                    
+                                                    
+                                                            ))}
+                                                    </tbody>
+                                                </>
+                                                :<>
+                                                {(template=="pacificCoast")?
+                                                <>
+                                                        <thead>
+                                                    <tr>
+                                                        {pacificCoast.map((header)=><td>{header}</td>)}
+                                                    </tr>
+                                                    </thead>
+                                                    <tbody style={{height:"100px",overflow:"scroll"}}>
+                                                        {dataSet.map((data)=>(
+                                                        <>                                                  
+                                                        <tr style={{border:"1px solid black",margin:"5px"}} >
+                                                            <>
+                                                            <td style={{width:"80px",border:"1px solid black",height:"100%",textAlign:"center"}}>
+                                                            
+                                                            <>
+                                                                
+                                                                {(data.tx[1]>=80)?<input type="text" style={{border:"none",background:"transparent",width:"100%",color:"green"}} defaultValue={data.tx[0]}></input>
+                                                                :
+                                                                <>
+                                                                {(data.tx[1]>=60&&data.tx[1]<80)?
+                                                                <input type="text" style={{border:"none",background:"transparent",width:"100%",color:"#FFD700"}} defaultValue={data.tx[0]}>
+                                                                </input>
+
+                                                                :
+                                                                <input type="text" style={{border:"none",background:"transparent",width:"100%",color:"red"}} defaultValue={data.tx[0]}>
+                                                                </input>
+                                                                }</>
+                                                                }
+                                                                </>
+                                                            </td>
+                                                            <td style={{width:"100px",border:"1px solid black",height:"100%",textAlign:"center"}}><>
+                                                            { data.qty_order.map(qorder=>(<>
+                                                            {(qorder[1]>=80)?
+                                                                <input type="text"
+                                                                style={{border:"none",background:"transparent",width:"100%",color:"green"}} defaultValue={qorder[0]}/>
+                                                                :
+                                                                <>
+                                                                {
+                                                                (qorder>=60&&qorder<80)?
+                                                                
+                                                                <input type="text" style={{border:"none",background:"transparent",width:"100%",color:"#FFD700"}} defaultValue={qorder[0]}></input>
+                                                                
+                                                                :
+                                                                <input type="text" style={{border:"none",background:"transparent",width:"100%",color:"red"}} defaultValue={qorder[0]}></input>
+                                                                }
+                                                                </>
+                                                            
+                                                            }
+                                                            
+                                                            </> ))}
+                                                            </> 
+                                                            </td>
+                                                            <td style={{width:"100px",border:"1px solid black",height:"100%",textAlign:"center"}}><>
+                                                            
+                                                            { data.qty_order.map(qorder=>(<>
+                                                            {(qorder[1]>=80)?
+                                                                <input type="text"
+                                                                style={{border:"none",background:"transparent",width:"100%",color:"green"}} defaultValue={qorder[0]}/>
+                                                                :
+                                                                <>
+                                                                {
+                                                                (qorder>=60&&qorder<80)?
+                                                                
+                                                                <input type="text" style={{border:"none",background:"transparent",width:"100%",color:"#FFD700"}} defaultValue={qorder[0]}></input>
+                                                                
+                                                                :
+                                                                <input type="text" style={{border:"none",background:"transparent",width:"100%",color:"red"}} defaultValue={qorder[0]}></input>
+                                                                }
+                                                                </>
+                                                            
+                                                            }
+                                                            
+                                                            </> ))}
+                                                            </>  
+                                                                
+                                                            </td>
+                                                            <td style={{width:"100px",border:"1px solid black",height:"100%",textAlign:"center"}}>
+                                                            <>
+                                                            { data.qty_ship.map(qship=>(<>
+                                                            {(qship[1]>=80)?
+                                                                <input type="text"
+                                                                style={{border:"none",background:"transparent",width:"100%",color:"green"}} defaultValue={qship[0]}/>
+                                                                :
+                                                                <>
+                                                                {
+                                                                (qship>=60&&qship<80)?
+                                                                
+                                                                <input type="text" style={{border:"none",background:"transparent",width:"100%",color:"#FFD700"}} defaultValue={qship[0]}></input>
+                                                                
+                                                                :
+                                                                <input type="text" style={{border:"none",background:"transparent",width:"100%",color:"red"}} defaultValue={qship[0]}></input>
+                                                                }
+                                                                </>
+                                                            
+                                                            }
+                                                            
+                                                            </> ))}
+                                                            </>
+                                                            </td> 
+
+                                                            <td style={{width:"100px",border:"1px solid black",height:"100%",textAlign:"center"}}>
+                                                            <>
+                                                            { data.uom.map(uom=>(<>
+                                                            {(uom[1]>=80)?
+                                                                <input type="text"
+                                                                style={{border:"none",background:"transparent",width:"100%",color:"green"}} defaultValue={uom[0]}/>
+                                                                :
+                                                                <>
+                                                                {
+                                                                (uom>=60&&uom<80)?
+                                                                
+                                                                <input type="text" style={{border:"none",background:"transparent",width:"100%",color:"#FFD700"}} defaultValue={uom[0]}></input>
+                                                                
+                                                                :
+                                                                <input type="text" style={{border:"none",background:"transparent",width:"100%",color:"red"}} defaultValue={uom[0]}></input>
+                                                                }
+                                                                </>
+                                                            
+                                                            }
+                                                            
+                                                            </> ))}
+                                                            </>
+                                                            </td> 
+                                                            
+                                                                
+                                                            <td style={{width:"100px",border:"1px solid black",height:"100%",textAlign:"center"}}>
+                                                            <>
+                                                            { data.units.map(unit=>(<>
+                                                            {(unit[1]>=80)?
+                                                                <input type="text"
+                                                                style={{border:"none",background:"transparent",width:"100%",color:"green"}} defaultValue={unit[0]}/>
+                                                                :
+                                                                <>
+                                                                {
+                                                                (unit>=60&&unit<80)?
+                                                                
+                                                                <input type="text" style={{border:"none",background:"transparent",width:"100%",color:"#FFD700"}} defaultValue={unit[0]}></input>
+                                                                
+                                                                :
+                                                                <input type="text" style={{border:"none",background:"transparent",width:"100%",color:"red"}} defaultValue={unit[0]}></input>
+                                                                }
+                                                                </>
+                                                            
+                                                            }
+                                                            
+                                                            </> ))}
+                                                            </>
+                                                            </td> 
+
+                                                            <td style={{width:"100px",border:"1px solid black",height:"100%",textAlign:"center"}}>
+                                                            <>
+                                                            { data.pack.map(pack=>(<>
+                                                            {(pack[1]>=80)?
+                                                                <input type="text"
+                                                                style={{border:"none",background:"transparent",width:"100%",color:"green"}} defaultValue={pack[0]}/>
+                                                                :
+                                                                <>
+                                                                {
+                                                                (pack>=60&&pack<80)?
+                                                                
+                                                                <input type="text" style={{border:"none",background:"transparent",width:"100%",color:"#FFD700"}} defaultValue={pack[0]}></input>
+                                                                
+                                                                :
+                                                                <input type="text" style={{border:"none",background:"transparent",width:"100%",color:"red"}} defaultValue={pack[0]}></input>
+                                                                }
+                                                                </>
+                                                            
+                                                            }
+                                                            
+                                                            </> ))}
+                                                            </>
+                                                            </td> 
+
+                                                            <td style={{width:"100px",border:"1px solid black",height:"100%",textAlign:"center"}}>
+                                                            <>
+                                                            { data.size.map(sz=>(<>
+                                                            {(sz[1]>=80)?
+                                                                <input type="text"
+                                                                style={{border:"none",background:"transparent",width:"100%",color:"green"}} defaultValue={sz[0]}/>
+                                                                :
+                                                                <>
+                                                                {
+                                                                (sz>=60&&sz<80)?
+                                                                
+                                                                <input type="text" style={{border:"none",background:"transparent",width:"100%",color:"#FFD700"}} defaultValue={sz[0]}></input>
+                                                                
+                                                                :
+                                                                <input type="text" style={{border:"none",background:"transparent",width:"100%",color:"red"}} defaultValue={sz[0]}></input>
+                                                                }
+                                                                </>
+                                                            
+                                                            }
+                                                            
+                                                            </> ))}
+                                                            </>
+                                                            </td> 
+
+                                                            <td style={{width:"100px",border:"1px solid black",height:"100%",textAlign:"center"}}>
+                                                            <>
+                                                                
+                                                                {(data.item_number[1]>=80)?<input type="text" style={{border:"none",background:"transparent",width:"100%",color:"green"}} defaultValue={data.item_number[0]}></input>
+                                                                :
+                                                                <>
+                                                                {(data.item_number[1]>=60&&data.item_number[1]<80)?
+                                                                <input type="text" style={{border:"none",background:"transparent",width:"100%",color:"#FFD700"}} defaultValue={data.item_number[0]}>
+                                                                
+                                                                </input>
+                                                                :
+                                                                <input type="text"  style={{border:"none",background:"transparent",width:"100%",color:"red"}} defaultValue={data.item_number[0]}>
+                                                                
+                                                                </input>
+                                                                }</>
+                                                                }
+                                                                </>
+                                                            </td>
+                                                                
+                                                            <td style={{width:"180px",border:"1px solid black",height:"100%",textAlign:"center"}}>{data.description.map(desc=>(
+                                                                <>
+                                                                
+                                                                {(desc[1]>=80)?<input type="text" style={{border:"none",background:"transparent",width:"100%",color:"green"}} defaultValue={desc[0]}></input>
+                                                                :
+                                                                <>
+                                                                {(desc[1]>=60&&desc[1]<80)?
+                                                                <input type="text" style={{border:"none",background:"transparent",width:"100%",color:"#FFD700"}} defaultValue={desc[0]}>
+                                                                
+                                                                </input>
+                                                                :
+                                                                <input type="text" style={{border:"none",background:"transparent",width:"100%",color:"red"}} defaultValue={desc[0]}>
+                                                                
+                                                                </input>
+                                                                }
+                                                                </>
+                                                                }
+                                                                </>
+                                                            ))}
+                                                            
+                                                            </td>
+
+                                                            <td style={{width:"100px",border:"1px solid black",height:"100%",textAlign:"center"}}>
+                                                            <>
+                                                                
+                                                                {(data.unit_price[1]>=80)?<input type="text" style={{border:"none",background:"transparent",width:"100%",color:"green"}} defaultValue={data.unit_price[0]}></input>
+                                                                :
+                                                                <>
+                                                                {(data.unit_price[1]>=60&&data.unit_price[1]<80)?
+                                                                <input type="text" style={{border:"none",background:"transparent",width:"100%",color:"#FFD700"}} defaultValue={data.unit_price[0]}>
+                                                                
+                                                                </input>
+                                                                :
+                                                                <input type="text"  style={{border:"none",background:"transparent",width:"100%",color:"red"}} defaultValue={data.unit_price[0]}>
+                                                                
+                                                                </input>
+                                                                }</>
+                                                                }
+                                                                </>
+                                                            </td>
+                                                            
+                                                            <td style={{width:"100px",border:"1px solid black",height:"100%",textAlign:"center"}}>
+                                                            <>
+                                                                
+                                                                {(data.billing_units[1]>=80)?<input type="text" style={{border:"none",background:"transparent",width:"100%",color:"green"}} defaultValue={data.billing[0]}></input>
+                                                                :
+                                                                <>
+                                                                {(data.billing_units[1]>=60&&data.billing_units[1]<80)?
+                                                                <input type="text" style={{border:"none",background:"transparent",width:"100%",color:"#FFD700"}} defaultValue={data.billing_units[0]}>
+                                                                
+                                                                </input>
+                                                                :
+                                                                <input type="text"  style={{border:"none",background:"transparent",width:"100%",color:"red"}} defaultValue={data.billing_units[0]}>
+                                                                
+                                                                </input>
+                                                                }</>
+                                                                }
+                                                                </>
+                                                            </td>
+
+                                                            <td style={{width:"100px",border:"1px solid black",height:"100%",textAlign:"center"}}>
+                                                            <>
+                                                                
+                                                                {(data.extend_amount[1]>=80)?<input type="text" style={{border:"none",background:"transparent",width:"100%",color:"green"}} defaultValue={data.extend_amount[0]}></input>
+                                                                :
+                                                                <>
+                                                                {(data.extend_amount[1]>=60&&data.extend_amount[1]<80)?
+                                                                <input type="text" style={{border:"none",background:"transparent",width:"100%",color:"#FFD700"}} defaultValue={data.extend_amount[0]}>
+                                                                
+                                                                </input>
+                                                                :
+                                                                <input type="text"  style={{border:"none",background:"transparent",width:"100%",color:"red"}} defaultValue={data.extend_amount[0]}>
+                                                                
+                                                                </input>
+                                                                }</>
+                                                                }
+                                                                </>
+                                                            </td>
+                                                            </> 
+                                                        </tr>
+
+                                                        </>
+                                                    
+                                                            ))}
+                                                    </tbody>
+                                                </>
+                                                :
+                                                <>
+                                                {(template=="produceAvailable")?
+                                                <>
+                                                  <thead>
+                                                    <tr>
+                                                        {produceAvailable.map((header)=><td>{header}</td>)}
+                                                    </tr>
+                                                    </thead>
+                                                    <tbody style={{height:"100px",overflow:"scroll"}}>
+                                                        {dataSet.map((data)=>(
+                                                        <>                                                  
+                                                        <tr style={{border:"1px solid black",margin:"5px"}} >
+                                                            {/* <td onClick={()=>console.log("extension",data.extension)}></td> */}
+                                                            <>
+                                                            <td style={{width:"80px",border:"1px solid black",height:"100%",textAlign:"center"}}>
+                                                            
+                                                            <>
+                                                                
+                                                                {(data.item_number[1]>=80)?<input type="text" style={{border:"none",background:"transparent",width:"100%",color:"green"}} defaultValue={data.item_number[0]}></input>
+                                                                :
+                                                                <>
+                                                                {(data.item_number[1]>=60&&data.item_number[1]<80)?
+                                                                <input type="text" style={{border:"none",background:"transparent",width:"100%",color:"#FFD700"}} defaultValue={data.item_number[0]}>
+                                                                </input>
+
+                                                                :
+                                                                <input type="text" style={{border:"none",background:"transparent",width:"100%",color:"red"}} defaultValue={data.item_number[0]}>
+                                                                </input>
+                                                                }</>
+                                                                }
+                                                                </>
+                                                            </td>
+                                                            <td style={{width:"100px",border:"1px solid black",height:"100%",textAlign:"center"}}>{ data.qty_ship.map(qship=>(<>
+                                                                
+                                                                {(data.qty_order[1]>=80)?<input style={{border:"none",background:"transparent",width:"100%",color:"green"}} defaultValue={data.qty_order[0]}></input>
+                                                                :
+                                                                <>
+                                                                {(data.qty_order[1]>=60&&data.qty_order[1]<80)?
+                                                                <input type="text" style={{border:"none",background:"transparent",width:"100%",color:"#FFD700"}} defaultValue={data.qty_order[0]}>                                                         
+                                                                </input>
+                                                                :
+                                                                <input type="text" style={{border:"none",background:"transparent",width:"100%",color:"red"}} defaultValue={ data.qty_order[0]}>
+                                                                
+                                                                </input>
+                                                                }</>
+                                                                }
+                                                                </>))}
+                                                            </td>
+                                                            <td style={{width:"100px",border:"1px solid black",height:"100%",textAlign:"center"}}>
+                                                            <>
+                                                            { data.qty_ship.map(qship=>(<>
+                                                            {(qship[1]>=80)?
+                                                                <input type="text"
+                                                                style={{border:"none",background:"transparent",width:"100%",color:"green"}} defaultValue={qship[0]}/>
+                                                                :
+                                                                <>
+                                                                {
+                                                                (qship>=60&&qship<80)?
+                                                                
+                                                                <input type="text" style={{border:"none",background:"transparent",width:"100%",color:"#FFD700"}} defaultValue={qship[0]}></input>
+                                                                
+                                                                :
+                                                                <input type="text" style={{border:"none",background:"transparent",width:"100%",color:"red"}} defaultValue={qship[0]}></input>
+                                                                }
+                                                                </>
+                                                            
+                                                            }
+                                                            
+                                                            </> ))}
+                                                            </>
+                                                            </td> 
+
+                                                            <td style={{width:"100px",border:"1px solid black",height:"100%",textAlign:"center"}}>
+                                                            <>
+                                                            { data.uom.map(uom=>(<>
+                                                            {(uom[1]>=80)?
+                                                                <input type="text"
+                                                                style={{border:"none",background:"transparent",width:"100%",color:"green"}} defaultValue={uom[0]}/>
+                                                                :
+                                                                <>
+                                                                {
+                                                                (uom>=60&&uom<80)?
+                                                                
+                                                                <input type="text" style={{border:"none",background:"transparent",width:"100%",color:"#FFD700"}} defaultValue={uom[0]}></input>
+                                                                
+                                                                :
+                                                                <input type="text" style={{border:"none",background:"transparent",width:"100%",color:"red"}} defaultValue={uom[0]}></input>
+                                                                }
+                                                                </>
+                                                            
+                                                            }
+                                                            
+                                                            </> ))}
+                                                            </>
+                                                            </td> 
+                                                            
+                                                            <td style={{width:"100px",border:"1px solid black",height:"100%",textAlign:"center"}}>
+                                                            <>
+                                                                
+                                                                {(data.unit_price[1]>=80)?<input type="text" style={{border:"none",background:"transparent",width:"100%",color:"green"}} defaultValue={data.unit_price[0]}></input>
+                                                                :
+                                                                <>
+                                                                {(data.unit_price[1]>=60&&data.unit_price[1]<80)?
+                                                                <input type="text" style={{border:"none",background:"transparent",width:"100%",color:"#FFD700"}} defaultValue={data.unit_price[0]}>
+                                                                
+                                                                </input>
+                                                                :
+                                                                <input type="text"  style={{border:"none",background:"transparent",width:"100%",color:"red"}} defaultValue={data.unit_price[0]}>
+                                                                
+                                                                </input>
+                                                                }</>
+                                                                }
+                                                                </>
+                                                            </td>
+                                                                
+                                                            <td style={{width:"180px",border:"1px solid black",height:"100%",textAlign:"center"}}>{data.extend_amount.map(eamount=>(
+                                                                <>
+                                                                
+                                                                {(eamount[1]>=80)?<input type="text" style={{border:"none",background:"transparent",width:"100%",color:"green"}} defaultValue={eamount[0]}></input>
+                                                                :
+                                                                <>
+                                                                {(eamount[1]>=60&&eamount[1]<80)?
+                                                                <input type="text" style={{border:"none",background:"transparent",width:"100%",color:"#FFD700"}} defaultValue={eamount[0]}>
+                                                                
+                                                                </input>
+                                                                :
+                                                                <input type="text" style={{border:"none",background:"transparent",width:"100%",color:"red"}} defaultValue={eamount[0]}>
+                                                                
+                                                                </input>
+                                                                }
+                                                                </>
+                                                                }
+                                                                </>
+                                                            ))}
+                                                        
+                                                            </td>
+
+                                                            <td style={{width:"180px",border:"1px solid black",height:"100%",textAlign:"center"}}>{data.unit_price.map(uprice=>(
+                                                                <>
+                                                                
+                                                                {(uprice[1]>=80)?<input type="text" style={{border:"none",background:"transparent",width:"100%",color:"green"}} defaultValue={uprice[0]}></input>
+                                                                :
+                                                                <>
+                                                                {(uprice[1]>=60&&uprice[1]<80)?
+                                                                <input type="text" style={{border:"none",background:"transparent",width:"100%",color:"#FFD700"}} defaultValue={uprice[0]}>
+                                                                
+                                                                </input>
+                                                                :
+                                                                <input type="text" style={{border:"none",background:"transparent",width:"100%",color:"red"}} defaultValue={uprice[0]}>
+                                                                
+                                                                </input>
+                                                                }
+                                                                </>
+                                                                }
+                                                                </>
+                                                            ))}
+                                                        
+                                                            </td>
+
+                                                            <td style={{width:"180px",border:"1px solid black",height:"100%",textAlign:"center"}}>{data.description.map(desc=>(
+                                                                <>
+                                                                
+                                                                {(desc[1]>=80)?<input type="text" style={{border:"none",background:"transparent",width:"100%",color:"green"}} defaultValue={desc[0]}></input>
+                                                                :
+                                                                <>
+                                                                {(desc[1]>=60&&desc[1]<80)?
+                                                                <input type="text" style={{border:"none",background:"transparent",width:"100%",color:"#FFD700"}} defaultValue={desc[0]}>
+                                                                
+                                                                </input>
+                                                                :
+                                                                <input type="text" style={{border:"none",background:"transparent",width:"100%",color:"red"}} defaultValue={desc[0]}>
+                                                                
+                                                                </input>
+                                                                }
+                                                                </>
+                                                                }
+                                                                </>
+                                                            ))}
+                                                        
+                                                            </td>
+                                                            
+                                                            </> 
+                                                        </tr>
+
+                                                        </>
+                                                    
+                                                    
+                                                            ))}
+                                                    </tbody>
+                                                </>
+                                                :<></>
+                                                }
+                                                </>
+                                                }
+                                               </>
+                                                }
+                                            
+                                            
                                            
-                                            {/* </div> */}
-                                        {/* </Table> */}
-
-                                        <table style={{overflowX:"scroll",width:"fit-content"}} className="detailTable">
-                                            <thead>
-                                            <tr><th>ItemNo</th> <th>Qt. Ord.</th> <th>Unit</th> <th>Desc.</th> <th>Unit Price</th> <th>Price</th></tr>
-                                            </thead>
-                                            <tbody>
-                                            {dataSet.map(data=>(
-                                                <tr style={{border:"1px solid black",margin:"5px"}}>
-                                                    <td style={{width:"80px",border:"1px solid black",height:"100%",textAlign:"center"}}>
-                                                    
-                                                    <>
-                                                        
-                                                        {(data.ItemNo[1]>=80)?<input type="text" style={{border:"none",background:"transparent",width:"100%",color:"green"}} defaultValue={data.ItemNo[0]}></input>
-                                                        :
-                                                        <>
-                                                        {(data.ItemNo[1]>=60&&data.ItemNo[1]<80)?
-                                                        <input type="text" style={{border:"none",background:"transparent",width:"100%",color:"yellow"}} defaultValue={data.ItemNo[0]}>
-                                                        </input>
-
-                                                        :
-                                                        <input type="text" style={{border:"none",background:"transparent",width:"100%",color:"red"}} defaultValue={data.ItemNo[0]}>
-                                                        </input>
-                                                        }</>
-                                                           }
-                                                        </>
-                                                    </td>
-                                                    <td style={{width:"100px",border:"1px solid black",height:"100%",textAlign:"center"}}><>
-                                                        
-                                                        {(data.Qtyordered[1]>=80)?<input style={{border:"none",background:"transparent",width:"100%",color:"green"}} defaultValue={data.Qtyordered[0]}></input>
-                                                        :
-                                                        <>
-                                                        {(data.Qtyordered[1]>=60&&data.Qtyordered[1]<80)?
-                                                        <input type="text" style={{border:"none",background:"transparent",width:"100%",color:"yellow"}} defaultValue={data.Qtyordered[0]}>                                                         
-                                                        </input>
-                                                        :
-                                                        <input type="text" style={{border:"none",background:"transparent",width:"100%",color:"red"}} defaultValue={ data.Qtyordered[0]}>
-                                                           
-                                                        </input>
-                                                        }</>
-                                                           }
-                                                        </></td>
-                                                    <td style={{width:"100px",border:"1px solid black",height:"100%",textAlign:"center"}}>
-                                                    <>
-                                                        
-                                                        {(data.unit[0][1]>=80)?<input type="text" style={{border:"none",background:"transparent",width:"100%",color:"green"}} defaultValue={data.unit[0][0]}></input>
-                                                        :
-                                                        <>
-                                                        {(data.unit[0][1]>=60&&data.unit[0][1]<80)?
-                                                        <input type="text" style={{border:"none",background:"transparent",width:"100%",color:"yellow"}} defaultValue={data.unit[0][0]}>
-                                                           
-                                                        </input>
-                                                        :
-                                                        <input type="text"  style={{border:"none",background:"transparent",width:"100%",color:"red"}} defaultValue={data.unit[0][0]}>
-                                                           
-                                                        </input>
-                                                        }</>
-                                                           }
-                                                        </>
-                                                    </td>
-                                                    <td style={{width:"180px",border:"1px solid black",height:"100%",textAlign:"center"}}>{data.description.map(desc=>(
-                                                        <>
-                                                        
-                                                        {(desc[1]>=80)?<input type="text" style={{border:"none",background:"transparent",width:"100%",color:"green"}} defaultValue={desc[0]}></input>
-                                                        :
-                                                        <>
-                                                        {(desc[1]>=60&&desc[1]<80)?
-                                                        <input type="text" style={{border:"none",background:"transparent",width:"100%",color:"yellow"}} defaultValue={desc[0]}>
-                                                           
-                                                        </input>
-                                                        :
-                                                        <input type="text" style={{border:"none",background:"transparent",width:"100%",color:"red"}} defaultValue={desc[0]}>
-                                                           
-                                                        </input>
-                                                        }</>
-                                                           }
-                                                        </>
-                                                    ))}
-                                                    
-                                                    </td>
-                                                    <td style={{width:"100px",border:"1px solid black",height:"100%",textAlign:"center"}}><>
-                                                        
-                                                        {(data.unitPrice[1]>=80)?<input type="text" style={{border:"none",background:"transparent",width:"100%",color:"green"}} defaultValue={data.unitPrice[0]}></input>
-                                                        :
-                                                        <>
-                                                        {(data.unitPrice[1]>=60&&data.unitPrice[1]<80)?
-                                                        <input type="text" style={{border:"none",background:"transparent",width:"100%",color:"yellow"}} defaultValue={ data.unitPrice[0]}>      
-                                                        </input>
-                                                        :
-                                                        <input type="text" style={{border:"none",background:"transparent",width:"100%",color:"red"}} defaultValue={ data.unitPrice[0]}>      
-                                                        </input>
-                                                        }</>
-                                                           }
-                                                        </></td>
-                                                    <td style={{width:"80px",border:"1px solid black",height:"100%",textAlign:"center"}}>{data.Price}</td>
-
-                                                </tr>
-                                            ))}
-                                            </tbody>
                                             
                                         </table>
                                     </div>
                                     </div>
+                                    <div className="setting-wrapper flex-x space-evenly cursor-pointer" style={{ display:"flex",justifyContent:"flex-end", width: "100%"}}>
+                                    <div className="setting-wrapper flex-x center cursor-pointer" style={{ backgroundColor: "#6D9766", width: "fit-content", padding: "10px", margin: "0px 10px" }}>
+                                        <span style={{ paddingLeft:"5px", fontSize: "16px", color: "#fff" }}>Save and Confirm</span>
+                                    </div>
+                                    <div className="setting-wrapper flex-x center cursor-pointer" style={{ backgroundColor: "#6D9766", width: "fit-content", padding: "10px" }}>
+                                        <span style={{ paddingLeft:"5px", fontSize: "16px", color: "#fff" }}>Cancel</span>
+                                    </div>
+                                    </div>
                                 </div>
-                            {/* <Table dataSource={tableData.filter(td=>td.resolve===filter || (`${filter}`==="Inbox") && (td.archive!="archived") || td.archive===filter)} pagination={false}> */}
-                            <Table style={{height:"18vh",overflow:"scroll"}} dataSource={items} onRow={(r) => ({
+                            <Table className="cursor-pointer" scroll={{y: 240}} dataSource={items}  onRow={(r,rowIndex) => ({
                                            onClick: (e) => {console.log(r);
                                                e.target.parentElement.style.backgroundColor="red";
-                                               setImgSrc(e.target.parentElement.firstElementChild.nextSibling.innerText)
+                                               setImgSrc(items[rowIndex].image_name);
                                                     console.log(e.target.parentElement.firstElementChild.nextSibling);
-                                                    // setdataindex(items.findIndex(obj => obj.image_name===imgSrc))
+                                                    setdataindex(rowIndex)
                                                     dataSet.splice(0,dataSet.length)
-                                                    checkIndex();
+                                                    // checkIndex();
                                                     
-                                                    console.log(items[dataindex].information.lines[0]);
-                                                    console.log("ordereed items ",items[dataindex].information.lines[0][0].qty_order);
-                                                    for(let i=0;i<items[dataindex].information.lines[0].length;i++)
-                                                        dataSet.push(
-                                                            
-                                                                        {
-                                                                            "ItemNo":items[dataindex].information.lines[i][0].item_number,
-                                                                            "Qtyordered":items[dataindex].information.lines[i][0].qty_order,
-                                                                            "unit":items[dataindex].information.lines[i][0].uom,
-                                                                            "description":items[dataindex].information.lines[i][0].description,
-                                                                            "unitPrice":items[dataindex].information.lines[i][0].unit_price,
-                                                                            "Price":"30"
-                                                                            // parseFloat(items[dataindex].information.lines[i][0].qty_order[0])*parseFloat(items[dataindex].information.lines[i][0].unit_price[0])
-                                                                        }
-                                                                    )
-                                                   
+                                                    console.log("invoice: ", items[rowIndex].information.lines);
+                                                    console.log("dataindex ", dataindex);
+
+                                                    // console.log("ordereed items ",items[rowIndex].information.lines[0][0].qty_order);
+                                                    for(let i=0;i<items[rowIndex].information.lines.length;i++)
+                                                    {
+                                                        { 
                                                         
-                                                    console.log("Dataset",dataSet);
-                                                    
+                                                        if(items[rowIndex].information.template=="Jordanos")
+                                                        {
+                                                            setTemplate('Jordanos')
+                                                            dataSet.push(
+                                                            
+                                                                {
+                                                                    
+                                                                    "itemno":items[rowIndex].information.lines[i][0].itemno,
+                                                                    "shipped":items[rowIndex].information.lines[i][0].shipped,
+                                                                    "pacsize":items[rowIndex].information.lines[i][0].pacsize,
+                                                                    "um":items[rowIndex].information.lines[i][0].um,
+                                                                    "brand":items[rowIndex].information.lines[i][0].brand,
+                                                                    "upc":items[rowIndex].information.lines[i][0].upc,
+                                                                    "extension":items[rowIndex].information.lines[i][0].extension,
+                                                                    "unitprice":items[rowIndex].information.lines[i][0].unitprice,                                                   "description":items[rowIndex].information.lines[i][0].description,          
+                                                                    
+                                                                    "Template":items[rowIndex].information.template
+                                                                    // parseFloat(items[dataindex].information.lines[i][0].qty_order[0])*parseFloat(items[dataindex].information.lines[i][0].unit_price[0])
+                                                                }
+                                                            )
+                                                        }
+                                                        
+                                                         else if (items[rowIndex].information.template=="Pacific Coast Produce,Inc.")
+                                                        {
+                                                            setTemplate('pacificCoast')
+                                                            dataSet.push(
+                                                            
+                                                                {
+                                                                    
+                                                                    "tx":items[rowIndex].information.lines[i][0].tx,
+                                                                    "item":items[rowIndex].information.lines[i][0].item,
+                                                                    "qty_order":items[rowIndex].information.lines[i][0].qty_order,
+                                                                    "qty_ship":items[rowIndex].information.lines[i][0].qty_ship,
+                                                                    "uom":items[rowIndex].information.lines[i][0].uom,
+                                                                    "units":items[rowIndex].information.lines[i][0].units,
+                                                                    "pack":items[rowIndex].information.lines[i][0].pack,
+                                                                    "size":items[rowIndex].information.lines[i][0].size,
+                                                                    "item_number":items[rowIndex].information.lines[i][0].item_number,
+                                                                    "unit_price":items[rowIndex].information.lines[i][0].unit_price,
+                                                                    "billing_units":items[rowIndex].information.lines[i][0].billing_units,
+                                                                    "extend_amount":items[rowIndex].information.lines[i][0].extend_amount,
+                                                                    "description":items[rowIndex].information.lines[i][0].description,          
+                                                                    
+                                                                    "Template":items[rowIndex].information.template
+                                                                    // parseFloat(items[dataindex].information.lines[i][0].qty_order[0])*parseFloat(items[dataindex].information.lines[i][0].unit_price[0])
+                                                                }
+                                                            )
+                                                        }
+
+                                                         else if (items[rowIndex].information.template=="Produce Available")
+                                                        {
+                                                             setTemplate('produceAvailable')
+                                                             dataSet.push(
+                                                            
+                                                                {
+                                                                    
+                                                                    "item_number":items[rowIndex].information.lines[i][0].item_number,
+                                                                    "qty_order":items[rowIndex].information.lines[i][0].qty_order,
+                                                                    "qty_ship":items[rowIndex].information.lines[i][0].qty_ship,
+                                                                    "uom":items[rowIndex].information.lines[i][0].uom,
+                                                                    "billing_units":items[rowIndex].information.lines[i][0].billing_units,
+                                                                    "extend_amount":items[rowIndex].information.lines[i][0].extend_amount,
+                                                                    "unit_price":items[rowIndex].information.lines[i][0].unit_price,
+                                                                    "description":items[rowIndex].information.lines[i][0].description,          
+                                                                    
+                                                                    "Template":items[rowIndex].information.template
+                                                                    // parseFloat(items[dataindex].information.lines[i][0].qty_order[0])*parseFloat(items[dataindex].information.lines[i][0].unit_price[0])
+                                                                }
+                                                            )
+                                                            
+                                                        }
+                                                       
+                                                        else
+                                                        {
+                                                            dataSet.push(
+                                                            
+                                                                {
+                                                                    "ItemNo":items[rowIndex].information.lines[i][0].item_number,
+                                                                    "Qtyordered":items[rowIndex].information.lines[i][0].qty_order,
+                                                                    "unit":items[rowIndex].information.lines[i][0].uom,
+                                                                    "description":items[rowIndex].information.lines[i][0].description,
+                                                                    "unitPrice":items[rowIndex].information.lines[i][0].unit_price,
+                                                                    "Price":items[rowIndex].information.lines[i][0].unit_price,
+                                                                    "Template":items[rowIndex].information.template
+                                                                    // parseFloat(items[dataindex].information.lines[i][0].qty_order[0])*parseFloat(items[dataindex].information.lines[i][0].unit_price[0])
+                                                                }
+                                                            )
+                                           
+                                                        }
+                                                     }
+
+                                                   
+                                                       
+                                                
+                                                    changeTop(
+                                                         {
+                                                             "shipping_address":items[rowIndex].information.shipping_address,
+                                                             "invoice":items[rowIndex].information.invoice_number,
+                                                             "orderDate":items[rowIndex].information.order_date,
+                                                             "delivery":items[rowIndex].uploaded_at,
+                                                             "total":items[rowIndex].information.total
+                                                         }
+                                                     )
+                                                                    }  
+                                                                    
+                                                              console.log("topTable",topTable)      
                                                             },
-                                        // setdataSet(
-                                        //     [
-                                        //         {
-                                        //             "ItemNo":items[dataindex].information.lines[0][0].item_number,
-                                        //             "Qtyordered":items[dataindex].information.lines[0][0].qty_order,
-                                        //             "unit":items[dataindex].information.lines[0][0].uom[0],
-                                        //             "description":"",
-                                        //             "unitPrice":"",
-                                        //             "Price":""
-                                        //         }
-                                        //     ])
                                                            
                                     })} pagination={false} >
 
-                                            {/* <div className="table-wrapper">  */}
                                             <Column align="center" title="Status" dataIndex="image_status" key="status" />
-                                            <Column align="center" title="Invoice" dataIndex="image_name" key="vendor"/>
                                             <Column align="center" title="Vendor" dataIndex="information.shipping_address[0][0][0]" key="vendor" />
                                             <Column align="center" title="Invoice Date" dataIndex="uploaded_at" key="invoiceDate" />
                                             <Column align="center" title="Invoice Number" dataIndex="information.invoice_number[0]" key="invoiceNumber" />
                                             <Column align="center" title="Amount" dataIndex="information.total[0]" key="total" />
                                             <Column align="center" title="Posted By" dataIndex="uploaded_by" key="postedBy" />
                                             
-                                            {/* <Column align="center" title="Actions" dataIndex="ot" key="actions" /> */}
-                                            {/* <Column align="center" title="DOT" dataIndex="dot" key="dot" />
-                                            <Column align="center" title="U.Breaks" dataIndex="uBreaks" key="uBreaks" />
-                                            <Column align="center" title="P.Breaks" dataIndex="pBreaks" key="pBreaks" />
-                                            <Column align="center" title="T.P.Breaks" dataIndex="tpBreaks" key="tpBreaks" />
-                                            <Column align="center" title="Est. Wages" dataIndex="estWages" key="estWages" /> */}
                                             <Column
                                                 align="center"
                                                 title="Actions"
@@ -933,39 +1225,20 @@ const [dataSet,setdataSet] =useState(
                                                     </Fragment>
                                                 )}
                                             />
-                                            {/* </div> */}
                                         </Table>
                             </div>
                         </div> :
-                            // Array(3).fill(3).map(x => (
                                 <div className="table-card">
-                                    {/* <div className="flex-x align-center table-wrapper">
-                                        <div className="flex-1">
-                                            <Title level={4} className="gx-mb-0">Jason Bourne</Title>
-                                        </div>
-                                        <div className="flex-x center cursor-pointer" onClick={(e) => addTimeCardFunc(e)}>
-                                            <Icon type="plus" style={{ color: "#fff" }} />
-                                        </div>
-                                    </div> */}
 
                                     
                                     <div className="table-container">
-                                        {/* <Table dataSource={tableData.filter(td=>td.resolve===filter || (`${filter}`==="Inbox") && (td.archive!="archived") || td.archive===filter)} onRow={(r) => ({ onClick: () => popUpModalHistoryUser() })} pagination={false}> */}
                                         <Table dataSource={items} pagination={false}>
-                                            {/* <div className="table-wrapper">  */}
                                             <Column align="center" title="Status" dataIndex="image_status" key="status" />
-                                            {/* <Column align="center" title="Invoice" dataIndex="image_name" key="vendor"/> */}
                                             <Column align="center" title="Vendor" dataIndex="information.shipping_address[0][0][0]" key="vendor" />
                                             <Column align="center" title="Invoice Date" dataIndex="uploaded_at" key="invoiceDate" />
-                                            <Column align="center" title="Invoice Number" dataIndex="image_id" key="invoiceNumber" />
+                                            <Column align="center" title="Invoice Number" dataIndex="information.invoice_number[0]" key="invoiceNumber" />
                                             <Column align="center" title="Amount" dataIndex="information.total[0]" key="total" />
                                             <Column align="center" title="Posted By" dataIndex="uploaded_by" key="postedBy" />
-                                            {/* <Column align="center" title="Actions" dataIndex="ot" key="actions" /> */}
-                                            {/* <Column align="center" title="DOT" dataIndex="dot" key="dot" />
-                                            <Column align="center" title="U.Breaks" dataIndex="uBreaks" key="uBreaks" />
-                                            <Column align="center" title="P.Breaks" dataIndex="pBreaks" key="pBreaks" />
-                                            <Column align="center" title="T.P.Breaks" dataIndex="tpBreaks" key="tpBreaks" />
-                                            <Column align="center" title="Est. Wages" dataIndex="estWages" key="estWages" /> */}
                                             <Column
                                                 align="center"
                                                 title="Actions"
@@ -974,425 +1247,17 @@ const [dataSet,setdataSet] =useState(
                                                 render={(value, record) => (
                                                     record.date !== "Total" &&
                                                     <Fragment>
-                                                        {/* <Icon className="cursor-pointer gx-mr-2" type="camera" theme="filled" style={{ fontSize: "18px", color: "#757575" }} /> */}
-                                                        {/* <Icon className="cursor-pointer gx-mr-2" type="clock-circle" style={{ fontSize: "18px", color: "#757575" }} onClick={(e) => addTimeFunc(e)} /> */}
                                                         <Icon className="cursor-pointer" type="delete" style={{ fontSize: "18px", color: "#757575" }} />
                                                     </Fragment>
                                                 )}
                                             />
-                                            {/* </div> */}
                                         </Table>
                                         
                                     </div>
                                 </div>
-                            // ))
                             )
                 }
-            </div>
-
-
-            {/* Model for edit time card history and all stuffs */}
-            <Modal
-                title="Add time card"
-                visible={visibleAddTimeCard}
-                onOk={handleOkAddTimeCard}
-                onCancel={handleCancelAddTimeCard}
-                className="hide-modal-footer main-modal-timesheet-history"
-            >
-
-                <Form onSubmit={handleSubmit} className="gx-form-row0">
-                    <Row>
-                        <Col span={12} xs={24} md={12}>
-                            <FormItem label="JOB TITLE" className="display-block">
-                                {getFieldDecorator("job_title", {
-                                    rules: [
-                                        { required: true, message: "Please input Job title!" },
-                                    ],
-                                })(<Input placeholder="Job title" />)}
-                            </FormItem>
-                        </Col>
-                        <Col span={12} xs={24} md={12}>
-                            <FormItem label="WAGE RATE" className="display-block">
-                                {getFieldDecorator("wage_rate", {
-                                    rules: [{ required: true, message: "Please input Wage rate!" }],
-                                })(<Input type="text" placeholder="Wage rate" />)}
-                            </FormItem>
-                        </Col>
-                        <Col span={12} xs={24} md={12}>
-                            <FormItem label="DATE" className="display-block">
-                                {getFieldDecorator("punch_in_date", {
-                                    rules: [{ required: true, message: "Please input Date!" }],
-                                })(<DatePicker format={'DD-MM-YYYY'} style={{ width: "100%" }} />)}
-                            </FormItem>
-                        </Col>
-                        <Col span={12} xs={24} md={12}>
-                            <FormItem label="PUNCH IN TIME" className="display-block">
-                                {getFieldDecorator("punch_in_time", {
-                                    rules: [{ required: true, message: "Punch in time!" }],
-                                })(<TimePicker style={{ width: "100%" }} />)}
-                            </FormItem>
-                        </Col>
-                        <Col span={12} xs={24} md={12}>
-                            <FormItem label="DATE" className="display-block">
-                                {getFieldDecorator("punch_out_date", {
-                                    rules: [{ required: true, message: "Please input Date!" }],
-                                })(<DatePicker format={'DD-MM-YYYY'} style={{ width: "100%" }} />)}
-                            </FormItem>
-                        </Col>
-                        <Col span={12} xs={24} md={12}>
-                            <FormItem label="PUNCH OUT TIME" className="display-block">
-                                {getFieldDecorator("punch_out_time", {
-                                    rules: [{ required: true, message: "Punch out time!" }],
-                                })(<TimePicker style={{ width: "100%" }} />)}
-                            </FormItem>
-                        </Col>
-
-                    </Row>
-                    <Row>
-                        <Col>
-                            <Title level={3}>Break</Title>
-                        </Col>
-                    </Row>
-                    <Row>
-                        <Col span={12} xs={24} md={12}>
-                            <FormItem label="DATE" className="display-block">
-                                {getFieldDecorator("break_in_date", {
-                                    rules: [{ required: true, message: "Please input Date!" }],
-                                })(<DatePicker format={'DD-MM-YYYY'} style={{ width: "100%" }} />)}
-                            </FormItem>
-                        </Col>
-                        <Col span={12} xs={24} md={12}>
-                            <FormItem label="BREAK IN TIME" className="display-block">
-                                {getFieldDecorator("break_in_time", {
-                                    rules: [{ required: true, message: "Break in time!" }],
-                                })(<TimePicker style={{ width: "100%" }} />)}
-                            </FormItem>
-                        </Col>
-                        <Col span={12} xs={24} md={12}>
-                            <FormItem label="DATE" className="display-block">
-                                {getFieldDecorator("break_out_date", {
-                                    rules: [{ required: true, message: "Please input Date!" }],
-                                })(<DatePicker format={'DD-MM-YYYY'} style={{ width: "100%" }} />)}
-                            </FormItem>
-                        </Col>
-                        <Col span={12} xs={24} md={12}>
-                            <FormItem label="BREAK OUT TIME" className="display-block">
-                                {getFieldDecorator("break_out_time", {
-                                    rules: [{ required: true, message: "Break out time!" }],
-                                })(<TimePicker style={{ width: "100%" }} />)}
-                            </FormItem>
-                        </Col>
-                        <Col span={12} xs={24} md={12}>
-                            <FormItem label="BREAK TYPE" className="display-block">
-                                {getFieldDecorator("break_type", {
-                                    rules: [
-                                        { required: true, message: "Please input break type!" },
-                                    ],
-                                })(<Input placeholder="" />)}
-                            </FormItem>
-                        </Col>
-                    </Row>
-                    <Row>
-                        <Col span={12} xs={24} md={12} className='mb-10'>
-                            <Icon type="plus" style={{ color: "#3751FF" }} />
-                            <a onClick={addBreak}>ADD ANOTHER BREAK</a>
-                        </Col>
-                    </Row>
-                    <Row>
-                        <Col span={12} xs={24} md={12}>
-                            <FormItem label="REASON FOR CHANGE" className="display-block">
-                                {getFieldDecorator("reason_for_change", {
-                                    rules: [
-                                        { required: true, message: "Please input reason!" },
-                                    ],
-                                })(<Input placeholder="" />)}
-                            </FormItem>
-                        </Col>
-                    </Row>
-                    <Row>
-                        <Col span={12} xs={24} md={12} className='mb-10'>
-                            <Icon type="delete" style={{ color: "#646464" }} />
-                            <span onClick={deleteTimeCard} style={{ color: "#646464", fontSize: '14px', marginLeft: '8px' }}>DELETE TIME CARD</span>
-                        </Col>
-                    </Row>
-                    <div className="flex-x center gx-mt-4 justify-content-space-between">
-                        {/* <FormItem className="gx-m-0"> */}
-                        <div className="flex-x">
-                            <Button
-                                type="primary"
-                                className="login-form-butto button-close-history-model"
-                                onClick={handleCancel}
-                            >
-                                Cancel
-            </Button>
-                        </div>
-                        <div className="flex-x">
-                            <Button
-                                // loading={loader}
-                                type="primary"
-                                htmlType="submit"
-                                className="login-form-button button-close-history-model"
-                            >
-                                Save
-            </Button>
-                        </div>
-                        {/* </FormItem> */}
-                    </div>
-                </Form>
-
-
-            </Modal>
-
-            <Modal
-                title="Json Bourne"
-                destroyOnClose={true}
-                visible={visible}
-                onOk={handleOk}
-                onCancel={handleCancel}
-                className="hide-modal-footer main-modal-timesheet-history"
-            >
-                <Tabs activeKey={formTab} className='tab-modal-timesheet' onChange={onChangeFormTab}>
-                    <TabPane tab="Edit" key={1}>
-                        <Form onSubmit={handleSubmit} className="gx-form-row0">
-                            <Row>
-                                <Col span={12} xs={24} md={12}>
-                                    <FormItem label="JOB TITLE" className="display-block">
-                                        {getFieldDecorator("job_title", {
-                                            rules: [
-                                                { required: true, message: "Please input Job title!" },
-                                            ],
-                                        })(<Input placeholder="Job title" />)}
-                                    </FormItem>
-                                </Col>
-                                <Col span={12} xs={24} md={12}>
-                                    <FormItem label="WAGE RATE" className="display-block">
-                                        {getFieldDecorator("wage_rate", {
-                                            rules: [{ required: true, message: "Please input Wage rate!" }],
-                                        })(<Input type="text" placeholder="Wage rate" />)}
-                                    </FormItem>
-                                </Col>
-                                <Col span={12} xs={24} md={12}>
-                                    <FormItem label="DATE" className="display-block">
-                                        {getFieldDecorator("punch_in_date", {
-                                            rules: [{ required: true, message: "Please input Date!" }],
-                                        })(<DatePicker format={'DD-MM-YYYY'} style={{ width: "100%" }} />)}
-                                    </FormItem>
-                                </Col>
-                                <Col span={12} xs={24} md={12}>
-                                    <FormItem label="PUNCH IN TIME" className="display-block">
-                                        {getFieldDecorator("punch_in_time", {
-                                            rules: [{ required: true, message: "Punch in time!" }],
-                                        })(<TimePicker style={{ width: "100%" }} />)}
-                                    </FormItem>
-                                </Col>
-                                <Col span={12} xs={24} md={12}>
-                                    <FormItem label="DATE" className="display-block">
-                                        {getFieldDecorator("punch_out_date", {
-                                            rules: [{ required: true, message: "Please input Date!" }],
-                                        })(<DatePicker format={'DD-MM-YYYY'} style={{ width: "100%" }} />)}
-                                    </FormItem>
-                                </Col>
-                                <Col span={12} xs={24} md={12}>
-                                    <FormItem label="PUNCH OUT TIME" className="display-block">
-                                        {getFieldDecorator("punch_out_time", {
-                                            rules: [{ required: true, message: "Punch out time!" }],
-                                        })(<TimePicker style={{ width: "100%" }} />)}
-                                    </FormItem>
-                                </Col>
-
-                            </Row>
-                            <Row>
-                                <Col>
-                                    <Title level={3}>Break</Title>
-                                </Col>
-                            </Row>
-                            <Row>
-                                <Col span={12} xs={24} md={12}>
-                                    <FormItem label="DATE" className="display-block">
-                                        {getFieldDecorator("break_in_date", {
-                                            rules: [{ required: true, message: "Please input Date!" }],
-                                        })(<DatePicker format={'DD-MM-YYYY'} style={{ width: "100%" }} />)}
-                                    </FormItem>
-                                </Col>
-                                <Col span={12} xs={24} md={12}>
-                                    <FormItem label="BREAK IN TIME" className="display-block">
-                                        {getFieldDecorator("break_in_time", {
-                                            rules: [{ required: true, message: "Break in time!" }],
-                                        })(<TimePicker style={{ width: "100%" }} />)}
-                                    </FormItem>
-                                </Col>
-                                <Col span={12} xs={24} md={12}>
-                                    <FormItem label="DATE" className="display-block">
-                                        {getFieldDecorator("break_out_date", {
-                                            rules: [{ required: true, message: "Please input Date!" }],
-                                        })(<DatePicker format={'DD-MM-YYYY'} style={{ width: "100%" }} />)}
-                                    </FormItem>
-                                </Col>
-                                <Col span={12} xs={24} md={12}>
-                                    <FormItem label="BREAK OUT TIME" className="display-block">
-                                        {getFieldDecorator("break_out_time", {
-                                            rules: [{ required: true, message: "Break out time!" }],
-                                        })(<TimePicker style={{ width: "100%" }} />)}
-                                    </FormItem>
-                                </Col>
-                                <Col span={12} xs={24} md={12}>
-                                    <FormItem label="BREAK TYPE" className="display-block">
-                                        {getFieldDecorator("break_type", {
-                                            rules: [
-                                                { required: true, message: "Please input break type!" },
-                                            ],
-                                        })(<Input placeholder="" />)}
-                                    </FormItem>
-                                </Col>
-                            </Row>
-                            <Row>
-                                <Col span={12} xs={24} md={12} className='mb-10'>
-                                    <Icon type="plus" style={{ color: "#3751FF" }} />
-                                    <a onClick={addBreak}>ADD ANOTHER BREAK</a>
-                                </Col>
-                            </Row>
-                            <Row>
-                                <Col span={12} xs={24} md={12}>
-                                    <FormItem label="REASON FOR CHANGE" className="display-block">
-                                        {getFieldDecorator("reason_for_change", {
-                                            rules: [
-                                                { required: true, message: "Please input reason!" },
-                                            ],
-                                        })(<Input placeholder="" />)}
-                                    </FormItem>
-                                </Col>
-                            </Row>
-                            <Row>
-                                <Col span={12} xs={24} md={12} className='mb-10'>
-                                    <Icon type="delete" style={{ color: "#646464" }} />
-                                    <span onClick={deleteTimeCard} style={{ color: "#646464", fontSize: '14px', marginLeft: '8px' }}>DELETE TIME CARD</span>
-                                </Col>
-                            </Row>
-                            <div className="flex-x center gx-mt-4 justify-content-space-between">
-                                {/* <FormItem className="gx-m-0"> */}
-                                <div className="flex-x">
-                                    <Button
-                                        type="primary"
-                                        // htmlType="submit"
-                                        className="login-form-button button-close-history-model"
-                                        onClick={handleCancel}
-                                    >
-                                        Cancel
-            </Button>
-                                </div>
-                                <div className="flex-x">
-                                    <Button
-                                        // loading={loader}
-                                        type="primary"
-                                        htmlType="submit"
-                                        className="login-form-button button-close-history-model"
-                                    >
-                                        Save
-            </Button>
-                                </div>
-                                {/* </FormItem> */}
-                            </div>
-                        </Form>
-                    </TabPane>
-                    <TabPane tab="TIMECARD HISTORY" key={2}>
-                        <TimeCard closeFun={handleCancel}></TimeCard>
-                    </TabPane>
-                    <TabPane tab="SNAPSHOTS" key={3}>
-                        <div>
-                            <CustomArrows closeFun={handleCancel} />
-                        </div>
-                    </TabPane>
-
-                </Tabs>
-
-            </Modal>
-
-            <Modal
-                width='90%'
-                destroyOnClose={true}
-                visible={visibleOnclickRow}
-                onOk={handleOk}
-                onCancel={handleCancelOnclickRow}
-                className="hide-modal-footer main-modal-timesheet-history"
-            >
-                <div className="table-card">
-                    <div className="flex-x align-center table-wrapper">
-                        <div className="flex-1">
-                            <Title level={4} className="gx-mb-0">Jason Bourne</Title>
-                        </div>
-                        <div className="flex-x center cursor-pointer" onClick={(e) => addTimeCardFunc(e)}>
-                            <Icon type="plus" style={{ color: "#fff" }} />
-                        </div>
-                    </div>
-                    <div className="table-container">
-                        <Table dataSource={tableData} onRow={(r) => ({ onClick: () => popUpModalHistoryUser() })} pagination={false} bordered>
-                            <Column align="center" title="Date" dataIndex="date" key="date" />
-                            <Column align="center" title="Wage Rate" dataIndex="wageRate" key="wageRate" />
-                            <Column align="center" title="Time Card" dataIndex="timeCard" key="timeCard" />
-                            <Column align="center" title="Job Title" dataIndex="jobTitle" key="jobTitle" />
-                            <Column align="center" title="Department" dataIndex="department" key="department" />
-                            <Column align="center" title="REG" dataIndex="reg" key="reg" />
-                            <Column align="center" title="OT" dataIndex="ot" key="ot" />
-                            <Column align="center" title="DOT" dataIndex="dot" key="dot" />
-                            <Column align="center" title="U.Breaks" dataIndex="uBreaks" key="uBreaks" />
-                            <Column align="center" title="P.Breaks" dataIndex="pBreaks" key="pBreaks" />
-                            <Column align="center" title="T.P.Breaks" dataIndex="tpBreaks" key="tpBreaks" />
-                            <Column align="center" title="Est. Wages" dataIndex="estWages" key="estWages" />
-                            <Column
-                                align="center"
-                                title="Actions"
-                                dataIndex="actions"
-                                key="actions"
-                                render={(value, record) => (
-                                    record.date !== "Total" &&
-                                    <Fragment>
-                                        <Icon className="cursor-pointer gx-mr-2" type="camera" theme="filled" style={{ fontSize: "18px", color: "#757575" }} />
-                                        <Icon className="cursor-pointer gx-mr-2" type="clock-circle" style={{ fontSize: "18px", color: "#757575" }} onClick={(e) => addTimeFunc(e)} />
-                                        <Icon className="cursor-pointer" type="delete" style={{ fontSize: "18px", color: "#757575" }} />
-                                    </Fragment>
-                                )}
-                            />
-                        </Table>
-                    </div>
-                    {/* <div className="table-container">
-                        <Table dataSource={tableData} onRow={(r) => ({ onClick: () => popUpModalHistoryUser() })} pagination={false} bordered>
-
-                        </Table>
-                    </div> */}
-                </div>
-                <div className="flex-x center gx-mt-4">
-                    {/* <FormItem className="gx-m-0"> */}
-                    <div className="flex-x">
-                        <Button
-                            // loading={loader}
-                            type="primary"
-                            className="login-form-button button-close-history-model"
-                            onClick={handleCancelOnclickRow}
-                        >
-                            Close
-                        </Button>
-                    </div>
-                </div>
-            </Modal>
-            {/* <Modal
-                width='90%'
-                destroyOnClose={true}
-                visible={groupByGraph}
-                onOk={handleOk}
-                onCancel={handleCancelOnclickGraph}
-                className="hide-modal-footer main-modal-timesheet-history"
-            >
-
-                <MyComponent></MyComponent>
-            </Modal> */}
-            {/* <HighchartsReact highcharts={Highcharts} options={options} /> */}
-            {/* <ReactFusioncharts
-                type="gantt"
-                width="100%"
-                height="100%"
-                dataFormat="JSON"
-                dataSource={dataSource}
-            /> */}
+            </div>  
         </Fragment >
     );
 };
