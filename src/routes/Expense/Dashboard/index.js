@@ -2,9 +2,9 @@ import Slider from "react-slick";
 import React, { Fragment, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import "slick-carousel/slick/slick.css";
-
+import {ExclamationCircleFilled} from '@ant-design/icons';
 import "slick-carousel/slick/slick-theme.css";
-import { DatePicker, Breadcrumb, Card, Icon, Typography, TimePicker, Modal, Tabs, Row, Col, Dropdown, Menu, Button, Input, Form, Table } from "antd";
+import { DatePicker, Breadcrumb, Card, Icon, Typography, TimePicker, Modal, Tabs, Row, Col, Dropdown, Menu, Button, Input, Form, Table} from "antd";
 import Column from "antd/lib/table/Column";
 import TimeCard from './TimeCardHistory'
 import CustomArrows from './Slider'
@@ -68,6 +68,19 @@ const Index = (props) => {
        changeTop(topTable)
     })},[resourceType,imgSrc,counter,dataSet,topTable])
 
+
+    
+    function handleSubmit()
+    {
+        console.log(updateddataSet)
+        //     var totalPerc= parseInt(topTable.shipping_address[1])+ parseInt(topTable.invoice[1])+ parseInt(topTable.orderDate[1])+ parseInt(topTable.total[1]) 
+            
+        
+        // console.log(totalPerc/4)
+    }
+
+
+
     const [loader, setLoader] = useState(false);
     const [visible, setVisible] = useState(false)
     const [visibleAddTimeCard, setVisibleAddTimeCard] = useState(false)
@@ -92,6 +105,7 @@ const Index = (props) => {
     //    });
     // }
 const [dataSet,setdataSet] =useState([])
+const [updateddataSet,setupdateddataSet] =useState([])
 const [topTable,setTopTable]= useState({})
         
     var settings = {
@@ -229,38 +243,19 @@ const produceAvailable = ['item_number','qty_order','qty_ship','uom',' billing_u
                                     <div className="details" style={{position:"relative"}}>
                                     <div className="metaData" style={{ textAlign:"left"}}>
                                     <div>Vendor :
-                                                        <>
-                                                            {topTable.shipping_address?.map(address=><>
-                                                               {(address[1]>=80)?
-                                                                <input type="text"
-                                                                style={{border:"none",background:"transparent",width:"fit-content",color:"green"}} value={address[0][0]}/>
-                                                                :
-                                                                <>
-                                                                {
-                                                                (address[1]>=60&&address[1]<80)?
-                                                                
-                                                                <input type="text" style={{border:"none",background:"transparent",width:"fit-content",color:"#FFD700"}} value={address[0][0]}></input>
-                                                                
-                                                                :
-                                                                <input type="text" style={{border:"none",background:"transparent",width:"fit-content",color:"red"}} value={address[0][0]}></input>
-                                                                }
-                                                                </>
-                                                            
-                                                            }
-                                                            
-                                                            </> )}
-                                                            {/* {topTable.shipping_address.map(address=>
-                                                                {(address[1]>80)?<>{address[0]}</>:<></>}
-                                                               )} */}
-                                                               {/* {
-                                                               topTable.shipping_address?.map(address=><>
-                                                               {address[0][0]}&nbsp;
-                                                               
-                                                               </>)
-                                                               } */}
-                                                            </>
-                                                            
-                                                            </div>
+                                        <>
+                                        {topTable.shipping_address?.[1]>=80?<input type="text" value={topTable.shipping_address?.[0]} style={{border:"none",background:"transparent",width:"100%",color:"green"}} ></input>
+                                        :
+                                        <>
+                                        {topTable.shipping_address?.[1]<=60&& topTable.shipping_address?.[1]>80?<input type="text" value={topTable.shipping_address?.[0]} style={{border:"none",background:"transparent",width:"100%",color:"orange"}}></input>
+                                        :
+                                        <input type="text" value={topTable.shipping_address?.[0]} style={{border:"none",background:"transparent",width:"100%",color:"red"}} ></input>}
+                                        </>
+                                        }
+                                        
+                                        
+                                        </>
+                                    </div>
 
                                     <div><span style={{color:'red'}}>Invoice # 
                                     {/* <>
@@ -350,7 +345,7 @@ const produceAvailable = ['item_number','qty_order','qty_ship','uom',' billing_u
                                                     </tr>
                                                     </thead>
                                                     <tbody style={{height:"100px",overflow:"scroll"}}>
-                                                        {dataSet.map((data)=>(
+                                                        {dataSet.map((data,index)=>(
                                                         <>                                                  
                                                         <tr style={{border:"1px solid black",margin:"5px"}} >
                                                             <>
@@ -358,15 +353,37 @@ const produceAvailable = ['item_number','qty_order','qty_ship','uom',' billing_u
                                                             
                                                             <>
                                                                 
-                                                                {(data.itemno[1]>=80)?<input type="text" style={{border:"none",background:"transparent",width:"100%",color:"green"}} defaultValue={data.itemno[0]}></input>
+                                                                {(data.itemno[1]>=80)?
+                                                                <input type="text" style={{border:"none",background:"transparent",width:"100%",color:"green"}} defaultValue={data.itemno[0]} className="itemNo"
+                                                            //    onChange={(e)=>{updateddataSet.push([{
+                                                            //         "itemno":[e.target.value,100]
+                                                            //     }]
+                                                            //     );
+                                                            //     console.log(updateddataSet)}
+                                                            //     }
+                                                                ></input>
                                                                 :
                                                                 <>
                                                                 {(data.itemno[1]>=60&&data.itemno[1]<80)?
-                                                                <input type="text" style={{border:"none",background:"transparent",width:"100%",color:"#FFD700"}} defaultValue={data.itemno[0]}>
+                                                                <input type="text" style={{border:"none",background:"transparent",width:"100%",color:"#FFD700"}} defaultValue={data.itemno[0]} className="itemNo"
+                                                                // onChange={(e)=>{updateddataSet.push([{
+                                                                //     "itemno":[e.target.value,100]
+                                                                // }]
+                                                                // );
+                                                                // console.log(updateddataSet)}
+                                                                // }
+                                                                >
                                                                 </input>
 
                                                                 :
-                                                                <input type="text" style={{border:"none",background:"transparent",width:"100%",color:"red"}} defaultValue={data.itemno[0]}>
+                                                                <input type="text" style={{border:"none",background:"transparent",width:"100%",color:"red"}} defaultValue={data.itemno[0]} className="itemNo"
+                                                                // onChange={(e)=>{updateddataSet.push([{
+                                                                //     "itemno":[e.target.value,100]
+                                                                // }]
+                                                                // );
+                                                                // console.log(updateddataSet)}
+                                                                // }
+                                                                >
                                                                 </input>
                                                                 }</>
                                                                 }
@@ -374,14 +391,37 @@ const produceAvailable = ['item_number','qty_order','qty_ship','uom',' billing_u
                                                             </td>
                                                             <td style={{width:"100px",border:"1px solid black",height:"100%",textAlign:"center"}}><>
                                                                 
-                                                                {(data.shipped[1]>=80)?<input style={{border:"none",background:"transparent",width:"100%",color:"green"}} defaultValue={data.shipped[0]}></input>
+                                                                {(data.shipped[1]>=80)?<input style={{border:"none",background:"transparent",width:"100%",color:"green"}} defaultValue={data.shipped[0]} className="shipped"
+                                                                // onChange={(e)=>{updateddataSet.push({
+                                                                //     "shipped":[e.target.value,100]
+                                                                // }
+                                                                // );
+                                                                // console.log(updateddataSet)}
+                                                                // }
+                                                                >
+
+                                                                </input>
                                                                 :
                                                                 <>
                                                                 {(data.shipped[1]>=60&&data.shipped[1]<80)?
-                                                                <input type="text" style={{border:"none",background:"transparent",width:"100%",color:"#FFD700"}} defaultValue={data.shipped[0]}>                                                         
+                                                                <input type="text" style={{border:"none",background:"transparent",width:"100%",color:"#FFD700"}} defaultValue={data.shipped[0]} className="shipped" 
+                                                                // onChange={(e)=>{updateddataSet.push({
+                                                                //     "shipped":[e.target.value,100]
+                                                                // }
+                                                                // );
+                                                                // console.log(updateddataSet)}
+                                                                // }
+                                                                >                                                         
                                                                 </input>
                                                                 :
-                                                                <input type="text" style={{border:"none",background:"transparent",width:"100%",color:"red"}} defaultValue={ data.shipped[0]}>
+                                                                <input type="text" style={{border:"none",background:"transparent",width:"100%",color:"red"}} defaultValue={ data.shipped[0]} className="shipped"
+                                                                // onChange={(e)=>{updateddataSet.push({
+                                                                //     "shipped":[e.target.value,100]
+                                                                // }
+                                                                // );
+                                                                // console.log(updateddataSet)}
+                                                                // }
+                                                                >
                                                                 
                                                                 </input>
                                                                 }</>
@@ -762,15 +802,15 @@ const produceAvailable = ['item_number','qty_order','qty_ship','uom',' billing_u
                                                             <td style={{width:"100px",border:"1px solid black",height:"100%",textAlign:"center"}}>
                                                             <>
                                                                 
-                                                                {(data.item_number[1]>=80)?<input type="text" style={{border:"none",background:"transparent",width:"100%",color:"green"}} defaultValue={data.item_number[0]}></input>
+                                                                {(data.item_number[0][1]>=80)?<input type="text" style={{border:"none",background:"transparent",width:"100%",color:"green"}} defaultValue={data.item_number[0][0]}></input>
                                                                 :
                                                                 <>
-                                                                {(data.item_number[1]>=60&&data.item_number[1]<80)?
-                                                                <input type="text" style={{border:"none",background:"transparent",width:"100%",color:"#FFD700"}} defaultValue={data.item_number[0]}>
+                                                                {(data.item_number[0][1]>=60&&data.item_number[1]<80)?
+                                                                <input type="text" style={{border:"none",background:"transparent",width:"100%",color:"#FFD700"}} defaultValue={data.item_number[0][0]}>
                                                                 
                                                                 </input>
                                                                 :
-                                                                <input type="text"  style={{border:"none",background:"transparent",width:"100%",color:"red"}} defaultValue={data.item_number[0]}>
+                                                                <input type="text"  style={{border:"none",background:"transparent",width:"100%",color:"red"}} defaultValue={data.item_number[0][0]}>
                                                                 
                                                                 </input>
                                                                 }</>
@@ -1070,7 +1110,9 @@ const produceAvailable = ['item_number','qty_order','qty_ship','uom',' billing_u
                                     </div>
                                     <div className="setting-wrapper flex-x space-evenly cursor-pointer" style={{ display:"flex",justifyContent:"flex-end", width: "100%"}}>
                                     <div className="setting-wrapper flex-x center cursor-pointer" style={{ backgroundColor: "#6D9766", width: "fit-content", padding: "10px", margin: "0px 10px" }}>
-                                        <span style={{ paddingLeft:"5px", fontSize: "16px", color: "#fff" }}>Save and Confirm</span>
+                                        <span style={{ paddingLeft:"5px", fontSize: "16px", color: "#fff" }}
+                                         onClick={()=>handleSubmit()} 
+                                         >Save and Confirm</span>
                                     </div>
                                     <div className="setting-wrapper flex-x center cursor-pointer" style={{ backgroundColor: "#6D9766", width: "fit-content", padding: "10px" }}>
                                         <span style={{ paddingLeft:"5px", fontSize: "16px", color: "#fff" }}>Cancel</span>
@@ -1078,16 +1120,18 @@ const produceAvailable = ['item_number','qty_order','qty_ship','uom',' billing_u
                                     </div>
                                 </div>
                             <Table className="cursor-pointer" scroll={{y: 240}} dataSource={items}  onRow={(r,rowIndex) => ({
-                                           onClick: (e) => {console.log(r);
+                                           onClick: (e) => {
+                                            //    console.log(r);
+                                            console.log("shippingAddress:",r.information.shipping_address[0])
                                                e.target.parentElement.style.backgroundColor="red";
                                                setImgSrc(items[rowIndex].image_name);
-                                                    console.log(e.target.parentElement.firstElementChild.nextSibling);
+                                                    // console.log(e.target.parentElement.firstElementChild.nextSibling);
                                                     setdataindex(rowIndex)
                                                     dataSet.splice(0,dataSet.length)
                                                     // checkIndex();
                                                     
-                                                    console.log("invoice: ", items[rowIndex].information.lines);
-                                                    console.log("dataindex ", dataindex);
+                                                    // console.log("invoice: ", items[rowIndex].information.lines);
+                                                    // console.log("dataindex ", dataindex);
 
                                                     // console.log("ordereed items ",items[rowIndex].information.lines[0][0].qty_order);
                                                     for(let i=0;i<items[rowIndex].information.lines.length;i++)
@@ -1157,8 +1201,7 @@ const produceAvailable = ['item_number','qty_order','qty_ship','uom',' billing_u
                                                                     "billing_units":items[rowIndex].information.lines[i][0].billing_units,
                                                                     "extend_amount":items[rowIndex].information.lines[i][0].extend_amount,
                                                                     "unit_price":items[rowIndex].information.lines[i][0].unit_price,
-                                                                    "description":items[rowIndex].information.lines[i][0].description,          
-                                                                    
+                                                                    "description":items[rowIndex].information.lines[i][0].description,
                                                                     "Template":items[rowIndex].information.template
                                                                     // parseFloat(items[dataindex].information.lines[i][0].qty_order[0])*parseFloat(items[dataindex].information.lines[i][0].unit_price[0])
                                                                 }
@@ -1185,10 +1228,7 @@ const produceAvailable = ['item_number','qty_order','qty_ship','uom',' billing_u
                                                         }
                                                      }
 
-                                                   
-                                                       
-                                                
-                                                    changeTop(
+                                                     changeTop(
                                                          {
                                                              "shipping_address":items[rowIndex].information.shipping_address,
                                                              "invoice":items[rowIndex].information.invoice_number,
@@ -1204,8 +1244,55 @@ const produceAvailable = ['item_number','qty_order','qty_ship','uom',' billing_u
                                                            
                                     })} pagination={false} >
 
-                                            <Column align="center" title="Status" dataIndex="image_status" key="status" />
-                                            <Column align="center" title="Vendor" dataIndex="information.shipping_address[0][0][0]" key="vendor" />
+                                            <Column align="center" title="Status" dataIndex="image_status" key="status"
+                                            render={(value, record) => (
+                                                record.date !== "Total" &&
+                                                <Fragment>
+                                                    {/* <Icon className="cursor-pointer gx-mr-2" type="camera" theme="filled" style={{ fontSize: "18px", color: "#757575" }} /> */}
+                                                    {/* <Icon className="cursor-pointer gx-mr-2" type="clock-circle" style={{ fontSize: "18px", color: "#757575" }} onClick={(e) => addTimeFunc(e)} /> */}
+                                                    {
+                                                      ((((parseInt( record.information.shipping_address[1])+
+                                                      parseInt(record.information.invoice_number[1])+
+                                                      parseInt( record.information.total[1])+
+                                                      parseInt(record.information.order_date[1]))/4))>95)?<>
+                                                            <ExclamationCircleFilled style={{color:'green',fontSize:'30px'}} />                                              
+                                                      
+                                                      </>:<>
+                                                      {
+                                                      ((
+                                                          (
+                                                              (
+                                                                  (parseInt( record.information.shipping_address[1])+
+                                                       parseInt(record.information.invoice_number[1])+
+                                                       parseInt( record.information.total[1])+
+                                                       parseInt(record.information.order_date[1])
+                                                       )/4)
+                                                       )>=80)&&  (
+                                                        (
+                                                            (parseInt( record.information.shipping_address[1])+
+                                                 parseInt(record.information.invoice_number[1])+
+                                                 parseInt( record.information.total[1])+
+                                                 parseInt(record.information.order_date[1])
+                                                 )/4)
+                                                 )<95)
+                                                       
+                                                       
+                                                       
+                                                       ?<>
+                                                        <ExclamationCircleFilled style={{color:'orange',fontSize:'30px'}} /></>:<><ExclamationCircleFilled style={{color:'red',fontSize:'30px'}} /></>}
+                                                      
+                                                      </>
+                                                    }
+                                                    {/* {
+                                                      ( (parseInt( record.information.shipping_address[1])+
+                                                       parseInt(record.information.invoice_number[1])+
+                                                       parseInt( record.information.total[1])+
+                                                       parseInt(record.information.order_date[1]))/4)
+                                                    }
+                                                    */}
+                                                </Fragment>
+                                            )} />
+                                            <Column align="center" title="Vendor" dataIndex="information.shipping_address[0]" key="vendor" />
                                             <Column align="center" title="Invoice Date" dataIndex="uploaded_at" key="invoiceDate" />
                                             <Column align="center" title="Invoice Number" dataIndex="information.invoice_number[0]" key="invoiceNumber" />
                                             <Column align="center" title="Amount" dataIndex="information.total[0]" key="total" />
@@ -1234,7 +1321,7 @@ const produceAvailable = ['item_number','qty_order','qty_ship','uom',' billing_u
                                     <div className="table-container">
                                         <Table dataSource={items} pagination={false}>
                                             <Column align="center" title="Status" dataIndex="image_status" key="status" />
-                                            <Column align="center" title="Vendor" dataIndex="information.shipping_address[0][0][0]" key="vendor" />
+                                            <Column align="center" title="Vendor" dataIndex="information.shipping_address[0]" key="vendor" />
                                             <Column align="center" title="Invoice Date" dataIndex="uploaded_at" key="invoiceDate" />
                                             <Column align="center" title="Invoice Number" dataIndex="information.invoice_number[0]" key="invoiceNumber" />
                                             <Column align="center" title="Amount" dataIndex="information.total[0]" key="total" />
