@@ -50,7 +50,7 @@ const Index = (props) => {
     var imgurl=`https://alan.dojoapi.co.in/media/images/${imgSrc}`;
     
     const [dataindex, setdataindex] = useState(0);
-      const [resourceType, setResourceType] = useState('all');
+      const [resourceType, setResourceType] = useState('review');
 
     const [items, setItems] = useState([])
     const [counter, setcounter] = useState(0)
@@ -64,9 +64,10 @@ const Index = (props) => {
         result.json().then(json => setItems(json))
         if(items.length<1)
         setcounter(counter+1);
-        // console.log(dataSet);
        changeTop(topTable)
-    })},[resourceType,imgSrc,counter,dataSet,topTable])
+
+
+    })},[resourceType,imgSrc,counter,dataSet,topTable,groupByGraph])
 
 
     
@@ -77,10 +78,14 @@ const Index = (props) => {
             
         
         // console.log(totalPerc/4)
+
+        document.querySelectorAll('.descript').forEach((item,index)=>{console.log(item.value)})
     }
 
 
-
+    const [galleryView,setGalleryView]=useState(true)
+    const [galleryrowindex, setGalleryRowindex] = useState(0);
+    const [listrowindex, setListRowindex] = useState(0);
     const [loader, setLoader] = useState(false);
     const [visible, setVisible] = useState(false)
     const [visibleAddTimeCard, setVisibleAddTimeCard] = useState(false)
@@ -96,6 +101,55 @@ const Index = (props) => {
     const handleMenuClick = value => {
 
     };
+
+
+
+
+
+
+    function changedisabled(bool)
+    {
+        setGalleryView(bool)
+       if(galleryView)
+       {
+        document.getElementById('processed').style.pointerEvents="none";
+        document.getElementById('processed').style.color="#e5e5e5";
+
+        document.getElementById('review').style.pointerEvents="none";
+        document.getElementById('review').style.color="#e5e5e5";
+
+        document.getElementById('trash').style.pointerEvents="none";
+        document.getElementById('trash').style.color="#e5e5e5";
+
+        }
+        else{
+            document.getElementById('processed').style.pointerEvents="all";
+            document.getElementById('processed').style.color="unset";
+            
+
+            document.getElementById('review').style.pointerEvents="all";
+            document.getElementById('review').style.color="unset";
+            
+
+            document.getElementById('trash').style.pointerEvents="all";
+            document.getElementById('trash').style.color="unset";
+            
+        }
+    }
+
+
+    function setActiveRowGallery(index)
+    {
+        setGalleryRowindex(index)
+        document.querySelectorAll('.galleryRow').forEach(row=>row.style.background="transparent")
+        document.querySelectorAll('.galleryRow')[index].style.background="red !important"
+
+    }
+
+    function setActiveRowList(index)
+    {
+         setListRowindex(index)
+    }
     // function checkIndex()
     // {
     //  items.find(function(item, i){
@@ -167,10 +221,10 @@ const produceAvailable = ['item_number','qty_order','qty_ship','uom',' billing_u
             <div>
                 <Title level={3}>Expense</Title>
                 <section className="Filter">
-                                        <span id="inbox"  onClick={()=>setResourceType('review')}>InReview</span>            
-                                        <span id="processed" onClick={()=>setResourceType('processing')}>Processing</span>
-                                        <span id="review" onClick={()=>setResourceType('complete')}>Complete</span>
-                                        <span id="trash" onClick={()=>setResourceType('trash')}>Trash</span>
+                                        <button style={{background:'transparent',border:'none',cursor:'pointer'}} className="" id="inbox"  onClick={()=>{setResourceType('review');console.log(resourceType)}}>InReview</button>            
+                                        <button style={{background:'transparent',border:'none',cursor:'pointer'}} className="" id="processed" onClick={()=>{setResourceType('processing');console.log(resourceType)}}>Processing</button>
+                                        <button style={{background:'transparent',border:'none',cursor:'pointer'}} className="" id="review" onClick={()=>{setResourceType('complete');console.log(resourceType)}}>Complete</button>
+                                        <button style={{background:'transparent',border:'none',cursor:'pointer'}} className="" id="trash" onClick={()=>{setResourceType('trash');console.log(resourceType)}}>Trash</button>
                             
                                     </section>
                 <div className="flex-x align-center filter-wrapper">
@@ -190,10 +244,10 @@ const produceAvailable = ['item_number','qty_order','qty_ship','uom',' billing_u
                             <Input placeholder="Search" prefix={<Icon type="search" style={{ color: "#252733" }} />} />
                         </div>
                         <div className="flex-x center combo-box-1 gx-mr-2">
-                            <div className={`flex-1 flex-x center ` + (groupByUserWithoutGraph ? 'active' : '') + ` cursor-pointer`} onClick={(e) => { groupByUserWithoutGraphFun(e) }}>
+                            <div className={`flex-1 flex-x center ` + (groupByUserWithoutGraph ? 'active' : '') + ` cursor-pointer`} onClick={(e) => { groupByUserWithoutGraphFun(e); changedisabled(true) }}>
                                 <Icon type="menu-fold" className={(groupByGraph ? 'color-black' : 'color-white')} style={{ fontSize: "16px" }} />
                             </div>
-                            <div className={"flex-1 flex-x center " + (groupByGraph ? 'active' : '') + " cursor-pointer"} onClick={(e) => { groupByGraphFun(e) }}>
+                            <div className={"flex-1 flex-x center " + (groupByGraph ? 'active' : '') + " cursor-pointer"} onClick={(e) => { groupByGraphFun(e); changedisabled(false)}} id="GalleryView">
                                 <Icon type="file-image" className={(groupByGraph ? 'color-white' : 'color-black')} style={{ fontSize: "16px" }} />
                             </div>
                         </div>
@@ -573,15 +627,15 @@ const produceAvailable = ['item_number','qty_order','qty_ship','uom',' billing_u
                                                             <td style={{width:"180px",border:"1px solid black",height:"100%",textAlign:"center"}}>{data.description.map(desc=>(
                                                                 <>
                                                                 
-                                                                {(desc[1]>=80)?<input type="text" style={{border:"none",background:"transparent",width:"100%",color:"green"}} defaultValue={desc[0]}></input>
+                                                                {(desc[1]>=80)?<input type="text" style={{border:"none",background:"transparent",width:"100%",color:"green"}} defaultValue={desc[0]} className="descript"></input>
                                                                 :
                                                                 <>
                                                                 {(desc[1]>=60&&desc[1]<80)?
-                                                                <input type="text" style={{border:"none",background:"transparent",width:"100%",color:"#FFD700"}} defaultValue={desc[0]}>
+                                                                <input type="text" style={{border:"none",background:"transparent",width:"100%",color:"#FFD700"}} defaultValue={desc[0]} className="descript">
                                                                 
                                                                 </input>
                                                                 :
-                                                                <input type="text" style={{border:"none",background:"transparent",width:"100%",color:"red"}} defaultValue={desc[0]}>
+                                                                <input type="text" style={{border:"none",background:"transparent",width:"100%",color:"red"}} defaultValue={desc[0]} className="descript">
                                                                 
                                                                 </input>
                                                                 }
@@ -802,7 +856,7 @@ const produceAvailable = ['item_number','qty_order','qty_ship','uom',' billing_u
                                                             <td style={{width:"100px",border:"1px solid black",height:"100%",textAlign:"center"}}>
                                                             <>
                                                                 
-                                                                {(data.item_number[0][1]>=80)?<input type="text" style={{border:"none",background:"transparent",width:"100%",color:"green"}} defaultValue={data.item_number[0][0]}></input>
+                                                                {(data.item_number[1]>=80)?<input type="text" style={{border:"none",background:"transparent",width:"100%",color:"green"}} defaultValue={data.item_number[0][0]}></input>
                                                                 :
                                                                 <>
                                                                 {(data.item_number[0][1]>=60&&data.item_number[1]<80)?
@@ -920,33 +974,35 @@ const produceAvailable = ['item_number','qty_order','qty_ship','uom',' billing_u
                                                             {/* <td onClick={()=>console.log("extension",data.extension)}></td> */}
                                                             <>
                                                             <td style={{width:"80px",border:"1px solid black",height:"100%",textAlign:"center"}}>
-                                                            
-                                                            <>
+                                                            {data.item_number.map(item=>( <>
                                                                 
-                                                                {(data.item_number[1]>=80)?<input type="text" style={{border:"none",background:"transparent",width:"100%",color:"green"}} defaultValue={data.item_number[0]}></input>
+                                                                {(item[1]>=80)?<input type="text" style={{border:"none",background:"transparent",width:"100%",color:"green"}} defaultValue={item[0]}></input>
                                                                 :
                                                                 <>
-                                                                {(data.item_number[1]>=60&&data.item_number[1]<80)?
-                                                                <input type="text" style={{border:"none",background:"transparent",width:"100%",color:"#FFD700"}} defaultValue={data.item_number[0]}>
+                                                                {(item[1]>=60&&item[1]<80)?
+                                                                <input type="text" style={{border:"none",background:"transparent",width:"100%",color:"#FFD700"}} defaultValue={item[0]}>
                                                                 </input>
 
                                                                 :
-                                                                <input type="text" style={{border:"none",background:"transparent",width:"100%",color:"red"}} defaultValue={data.item_number[0]}>
+                                                                <input type="text" style={{border:"none",background:"transparent",width:"100%",color:"red"}} defaultValue={item[0]}>
                                                                 </input>
                                                                 }</>
                                                                 }
-                                                                </>
+                                                                </>))}
+                                                           
                                                             </td>
-                                                            <td style={{width:"100px",border:"1px solid black",height:"100%",textAlign:"center"}}>{ data.qty_ship.map(qship=>(<>
+                                                            <td style={{width:"100px",border:"1px solid black",height:"100%",textAlign:"center"}}>
+                                                                { data.qty_order.map(qorder=>(
+                                                            <>
                                                                 
-                                                                {(data.qty_order[1]>=80)?<input style={{border:"none",background:"transparent",width:"100%",color:"green"}} defaultValue={data.qty_order[0]}></input>
+                                                                {(qorder[1]>=80)?<input style={{border:"none",background:"transparent",width:"100%",color:"green"}} defaultValue={qorder[0]}></input>
                                                                 :
                                                                 <>
-                                                                {(data.qty_order[1]>=60&&data.qty_order[1]<80)?
-                                                                <input type="text" style={{border:"none",background:"transparent",width:"100%",color:"#FFD700"}} defaultValue={data.qty_order[0]}>                                                         
+                                                                {(qorder[1]>=60&&qorder[1]<80)?
+                                                                <input type="text" style={{border:"none",background:"transparent",width:"100%",color:"#FFD700"}} defaultValue={qorder[0]}>                                                         
                                                                 </input>
                                                                 :
-                                                                <input type="text" style={{border:"none",background:"transparent",width:"100%",color:"red"}} defaultValue={ data.qty_order[0]}>
+                                                                <input type="text" style={{border:"none",background:"transparent",width:"100%",color:"red"}} defaultValue={ qorder[0]}>
                                                                 
                                                                 </input>
                                                                 }</>
@@ -1002,22 +1058,23 @@ const produceAvailable = ['item_number','qty_order','qty_ship','uom',' billing_u
                                                             </td> 
                                                             
                                                             <td style={{width:"100px",border:"1px solid black",height:"100%",textAlign:"center"}}>
-                                                            <>
+                                                                {data.unit_price.map(uPrice=>(   <>
                                                                 
-                                                                {(data.unit_price[1]>=80)?<input type="text" style={{border:"none",background:"transparent",width:"100%",color:"green"}} defaultValue={data.unit_price[0]}></input>
+                                                                {(uPrice[1]>=80)?<input type="text" style={{border:"none",background:"transparent",width:"100%",color:"green"}} defaultValue={uPrice[0]}></input>
                                                                 :
                                                                 <>
-                                                                {(data.unit_price[1]>=60&&data.unit_price[1]<80)?
-                                                                <input type="text" style={{border:"none",background:"transparent",width:"100%",color:"#FFD700"}} defaultValue={data.unit_price[0]}>
+                                                                {(uPrice[1]>=60&&uPrice[1]<80)?
+                                                                <input type="text" style={{border:"none",background:"transparent",width:"100%",color:"#FFD700"}} defaultValue={uPrice[0]}>
                                                                 
                                                                 </input>
                                                                 :
-                                                                <input type="text"  style={{border:"none",background:"transparent",width:"100%",color:"red"}} defaultValue={data.unit_price[0]}>
+                                                                <input type="text"  style={{border:"none",background:"transparent",width:"100%",color:"red"}} defaultValue={uPrice[0]}>
                                                                 
                                                                 </input>
                                                                 }</>
                                                                 }
-                                                                </>
+                                                                </>))}
+                                                         
                                                             </td>
                                                                 
                                                             <td style={{width:"180px",border:"1px solid black",height:"100%",textAlign:"center"}}>{data.extend_amount.map(eamount=>(
@@ -1119,21 +1176,21 @@ const produceAvailable = ['item_number','qty_order','qty_ship','uom',' billing_u
                                     </div>
                                     </div>
                                 </div>
-                            <Table className="cursor-pointer" scroll={{y: 240}} dataSource={items}  onRow={(r,rowIndex) => ({
+                            <Table className="cursor-pointer" scroll={{y: 240}} dataSource={items} rowClassName='galleryRow'  onRow={(r,rowIndex) => ({
                                            onClick: (e) => {
-                                            //    console.log(r);
-                                            console.log("shippingAddress:",r.information.shipping_address[0])
-                                               e.target.parentElement.style.backgroundColor="red";
+                                               console.log("row",e.target.parentElement);
+                                          
+                                            //    e.target.parentElement.style.backgroundColor="red";
+                                            //    e.target.parentElement.classlist.add('activeRow');
+                                                    // setActiveRowGallery(rowIndex)
+                                                    document.querySelectorAll('.galleryRow').forEach(row=>row.style.opacity="0.5")
+                                                         document.querySelectorAll('.galleryRow')[rowIndex].style.opacity="1"
+                                                        //  document.querySelectorAll('.galleryRow')[rowIndex].style.background="red"
                                                setImgSrc(items[rowIndex].image_name);
-                                                    // console.log(e.target.parentElement.firstElementChild.nextSibling);
+                                                   
                                                     setdataindex(rowIndex)
                                                     dataSet.splice(0,dataSet.length)
-                                                    // checkIndex();
-                                                    
-                                                    // console.log("invoice: ", items[rowIndex].information.lines);
-                                                    // console.log("dataindex ", dataindex);
-
-                                                    // console.log("ordereed items ",items[rowIndex].information.lines[0][0].qty_order);
+                                               
                                                     for(let i=0;i<items[rowIndex].information.lines.length;i++)
                                                     {
                                                         { 
@@ -1155,7 +1212,7 @@ const produceAvailable = ['item_number','qty_order','qty_ship','uom',' billing_u
                                                                     "unitprice":items[rowIndex].information.lines[i][0].unitprice,                                                   "description":items[rowIndex].information.lines[i][0].description,          
                                                                     
                                                                     "Template":items[rowIndex].information.template
-                                                                    // parseFloat(items[dataindex].information.lines[i][0].qty_order[0])*parseFloat(items[dataindex].information.lines[i][0].unit_price[0])
+                                                                    
                                                                 }
                                                             )
                                                         }
@@ -1182,7 +1239,6 @@ const produceAvailable = ['item_number','qty_order','qty_ship','uom',' billing_u
                                                                     "description":items[rowIndex].information.lines[i][0].description,          
                                                                     
                                                                     "Template":items[rowIndex].information.template
-                                                                    // parseFloat(items[dataindex].information.lines[i][0].qty_order[0])*parseFloat(items[dataindex].information.lines[i][0].unit_price[0])
                                                                 }
                                                             )
                                                         }
@@ -1203,7 +1259,6 @@ const produceAvailable = ['item_number','qty_order','qty_ship','uom',' billing_u
                                                                     "unit_price":items[rowIndex].information.lines[i][0].unit_price,
                                                                     "description":items[rowIndex].information.lines[i][0].description,
                                                                     "Template":items[rowIndex].information.template
-                                                                    // parseFloat(items[dataindex].information.lines[i][0].qty_order[0])*parseFloat(items[dataindex].information.lines[i][0].unit_price[0])
                                                                 }
                                                             )
                                                             
@@ -1221,7 +1276,6 @@ const produceAvailable = ['item_number','qty_order','qty_ship','uom',' billing_u
                                                                     "unitPrice":items[rowIndex].information.lines[i][0].unit_price,
                                                                     "Price":items[rowIndex].information.lines[i][0].unit_price,
                                                                     "Template":items[rowIndex].information.template
-                                                                    // parseFloat(items[dataindex].information.lines[i][0].qty_order[0])*parseFloat(items[dataindex].information.lines[i][0].unit_price[0])
                                                                 }
                                                             )
                                            
@@ -1241,6 +1295,12 @@ const produceAvailable = ['item_number','qty_order','qty_ship','uom',' billing_u
                                                                     
                                                               console.log("topTable",topTable)      
                                                             },
+                                      
+                                       
+                                        // onMouseLeave:(e)=>
+                                        // {
+                                        //     e.target.parentElement.style.backgroundColor="red";
+                                        // }
                                                            
                                     })} pagination={false} >
 
@@ -1293,7 +1353,7 @@ const produceAvailable = ['item_number','qty_order','qty_ship','uom',' billing_u
                                                 </Fragment>
                                             )} />
                                             <Column align="center" title="Vendor" dataIndex="information.shipping_address[0]" key="vendor" />
-                                            <Column align="center" title="Invoice Date" dataIndex="uploaded_at" key="invoiceDate" />
+                                            <Column align="center" title="Invoice Date" dataIndex="information.order_date[0]" key="invoiceDate" />
                                             <Column align="center" title="Invoice Number" dataIndex="information.invoice_number[0]" key="invoiceNumber" />
                                             <Column align="center" title="Amount" dataIndex="information.total[0]" key="total" />
                                             <Column align="center" title="Posted By" dataIndex="uploaded_by" key="postedBy" />
@@ -1319,10 +1379,59 @@ const produceAvailable = ['item_number','qty_order','qty_ship','uom',' billing_u
 
                                     
                                     <div className="table-container">
-                                        <Table dataSource={items} pagination={false}>
-                                            <Column align="center" title="Status" dataIndex="image_status" key="status" />
+                                        <Table dataSource={items} pagination={false} rowClassName='galleryRow'  onRow={(r,rowIndex) => ({
+                                           onClick: (e) => {document.querySelectorAll('.galleryRow').forEach(row=>row.style.opacity="0.5")
+                                           document.querySelectorAll('.galleryRow')[rowIndex].style.opacity="1"}})}>
+                                        <Column align="center" title="Status" dataIndex="image_status" key="status"
+                                            render={(value, record) => (
+                                                record.date !== "Total" &&
+                                                <Fragment>
+                                                    {/* <Icon className="cursor-pointer gx-mr-2" type="camera" theme="filled" style={{ fontSize: "18px", color: "#757575" }} /> */}
+                                                    {/* <Icon className="cursor-pointer gx-mr-2" type="clock-circle" style={{ fontSize: "18px", color: "#757575" }} onClick={(e) => addTimeFunc(e)} /> */}
+                                                    {
+                                                      ((((parseInt( record.information.shipping_address[1])+
+                                                      parseInt(record.information.invoice_number[1])+
+                                                      parseInt( record.information.total[1])+
+                                                      parseInt(record.information.order_date[1]))/4))>95)?<>
+                                                            <ExclamationCircleFilled style={{color:'green',fontSize:'30px'}} />                                              
+                                                      
+                                                      </>:<>
+                                                      {
+                                                      ((
+                                                          (
+                                                              (
+                                                                  (parseInt( record.information.shipping_address[1])+
+                                                       parseInt(record.information.invoice_number[1])+
+                                                       parseInt( record.information.total[1])+
+                                                       parseInt(record.information.order_date[1])
+                                                       )/4)
+                                                       )>=80)&&  (
+                                                        (
+                                                            (parseInt( record.information.shipping_address[1])+
+                                                 parseInt(record.information.invoice_number[1])+
+                                                 parseInt( record.information.total[1])+
+                                                 parseInt(record.information.order_date[1])
+                                                 )/4)
+                                                 )<95)
+                                                       
+                                                       
+                                                       
+                                                       ?<>
+                                                        <ExclamationCircleFilled style={{color:'orange',fontSize:'30px'}} /></>:<><ExclamationCircleFilled style={{color:'red',fontSize:'30px'}} /></>}
+                                                      
+                                                      </>
+                                                    }
+                                                    {/* {
+                                                      ( (parseInt( record.information.shipping_address[1])+
+                                                       parseInt(record.information.invoice_number[1])+
+                                                       parseInt( record.information.total[1])+
+                                                       parseInt(record.information.order_date[1]))/4)
+                                                    }
+                                                    */}
+                                                </Fragment>
+                                            )} />
                                             <Column align="center" title="Vendor" dataIndex="information.shipping_address[0]" key="vendor" />
-                                            <Column align="center" title="Invoice Date" dataIndex="uploaded_at" key="invoiceDate" />
+                                            <Column align="center" title="Invoice Date" dataIndex="information.order_date[0]" key="invoiceDate" />
                                             <Column align="center" title="Invoice Number" dataIndex="information.invoice_number[0]" key="invoiceNumber" />
                                             <Column align="center" title="Amount" dataIndex="information.total[0]" key="total" />
                                             <Column align="center" title="Posted By" dataIndex="uploaded_by" key="postedBy" />
